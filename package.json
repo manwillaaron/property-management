@@ -39,10 +39,7 @@
     ]
   },
   "proxy": "http://localhost:3005",
-  "main": "server/index.js",
-  "nodemonConfig": {
-    "ignore": [
-      "src"
-    ]
+  "main": "server/index.js"
+    
   }
-}
+
