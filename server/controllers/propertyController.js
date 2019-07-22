@@ -9,6 +9,7 @@ module.exports = {
     async editProperty(req,res){
         let{propertyId} = req.params
         let {
+            propertyName,
             address,
             beds,
             baths,
@@ -17,16 +18,23 @@ module.exports = {
             rent,
             gasProvider,
             electricProvider,
+            hasRenter,
             hasFridge,
             hasDishwasher,
             hasWasherDryer,
             mortgage,
-            taxes
+            taxes,
+            imgUrl,
+            imgUrl2,
+            imgUrl3,
+            imgUrl4,
+            imgUrl5
             
         } = req.body
         const db = req.app.get('db')
         let properties = await db.edit_property([
             +propertyId,
+            propertyName,
             address,
             beds,
             baths,
@@ -35,11 +43,17 @@ module.exports = {
             rent,
             gasProvider,
             electricProvider,
+            hasRenter,
             hasFridge,
             hasDishwasher,
             hasWasherDryer,
             mortgage,
-            taxes
+            taxes,
+            imgUrl,
+            imgUrl2,
+            imgUrl3,
+            imgUrl4,
+            imgUrl5
         ])
         res.send(properties)
     },
@@ -54,6 +68,7 @@ module.exports = {
     async addProperty(req,res){
         const db = req.app.get('db')
         let {
+            propertyName,
             address,
             beds,
             baths,
@@ -62,6 +77,7 @@ module.exports = {
             rent,
             gasProvider,
             electricProvider,
+            hasRenter,
             hasFridge,
             hasDishwasher,
             hasWasherDryer,
@@ -69,6 +85,7 @@ module.exports = {
             taxes
         } = req.body
         let properties = await db.add_property([
+             propertyName,
             address,
             beds,
             baths,
@@ -77,6 +94,7 @@ module.exports = {
             rent,
             gasProvider,
             electricProvider,
+            hasRenter,
             hasFridge,
             hasDishwasher,
             hasWasherDryer,
