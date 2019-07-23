@@ -5,6 +5,9 @@ const session = require("express-session");
 const ac = require("./controllers/adminController.js");
 const pc = require("./controllers/propertyController");
 const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
+const authCheck = require('./middleware/authCheck');
+const initSession = require('./middleware/initSession');
+
 
 const app = express();
 
@@ -23,14 +26,18 @@ app.use(
 
 massive(CONNECTION_STRING).then(db => {
   console.log("db is all good");
-  app.set("db,db");
+  app.set('db',db);
 });
+
+app.use(initSession);
+
+
 
 //admin
 app.post("/api/login", ac.login);
 app.post("/api/register", ac.register);
 app.delete("/api/signout", ac.signout);
-app.get("/api/admin", ac.getAdmin);
+app.get("/api/admin",authCheck, ac.getAdmin);
 
 //property
 app.get("/api/properties/:adminId", pc.getProperties);

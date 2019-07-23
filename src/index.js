@@ -7,11 +7,13 @@ import store from './redux/store'
 import { HashRouter } from "react-router-dom";
 import {Provider} from 'react-redux'
 
+
+
 ReactDOM.render(
   <HashRouter>
-    {/* <Provider store = {store}> */}
+    <Provider store = {store}>
       <App />
-    {/* </Provider> */}
+    </Provider>
   </HashRouter>,
   document.getElementById("root")
 );
