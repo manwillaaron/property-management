@@ -1,16 +1,18 @@
 import axios from "axios";
-import { ADD_PROPERTY, EDIT_PROPERTY, GET_PROPERTIES, DELETE_PROPERTY } from "./actionTypes";
-
+import {
+  ADD_PROPERTY,
+  EDIT_PROPERTY,
+  GET_PROPERTIES,
+  DELETE_PROPERTY
+} from "./actionTypes";
 
 const initialState = {
   properties: [],
   error: false
 };
 
-export function getProperties(adminId) {
-  let data = axios
-  .get(`/api/properties/${adminId}`)
-  .then(res => res.data);
+export function getProperties(admin_id) {
+  let data = axios.get(`/api/properties/${admin_id}`).then(res => res.data);
   return {
     type: GET_PROPERTIES,
     payload: data
@@ -18,7 +20,6 @@ export function getProperties(adminId) {
 }
 
 export function addProperty(
-  property_name,
   address,
   num_beds,
   num_baths,
@@ -32,35 +33,36 @@ export function addProperty(
   dishwasher_included,
   washer_dryer_included,
   mortgage,
-  taxes,
+  tax_yearly,
   img_url,
   img_url2,
   img_url3,
   img_url4,
-  img_url5
+  img_url5,
+  property_name
 ) {
   let data = axios
     .post("/api/properties", {
-      property_name,
-      address,
-      num_beds,
-      num_baths,
-      square_footage,
-      acreage,
-      rent,
-      gas_company,
-      electric_company,
+      address, 
+      num_beds, 
+      num_baths, 
+      square_footage, 
+      acreage, 
+      rent, 
+      gas_company, 
+      electric_company, 
       has_renter,
-      fridge_included,
-      dishwasher_included,
-      washer_dryer_included,
-      mortgage,
-      taxes,
+      fridge_included, 
+      dishwasher_included, 
+      washer_dryer_included, 
+      mortgage, 
+      tax_yearly,
       img_url,
       img_url2,
       img_url3,
       img_url4,
-      img_url5
+      img_url5,
+      property_name
     })
     .then(res => res.data);
   return {
@@ -71,7 +73,6 @@ export function addProperty(
 
 export function editProperties(
   propertyId,
-  property_name,
   address,
   num_beds,
   num_baths,
@@ -85,16 +86,18 @@ export function editProperties(
   dishwasher_included,
   washer_dryer_included,
   mortgage,
-  taxes,
+  tax_yearly,
   img_url,
   img_url2,
   img_url3,
   img_url4,
-  img_url5
+  img_url5,
+  property_name,
+  admin_id
 ) {
+  console.log('hit pr edit');
   let data = axios
     .put(`/api/properties/${propertyId}`, {
-      property_name,
       address,
       num_beds,
       num_baths,
@@ -108,12 +111,14 @@ export function editProperties(
       dishwasher_included,
       washer_dryer_included,
       mortgage,
-      taxes,
+      tax_yearly,
       img_url,
       img_url2,
       img_url3,
       img_url4,
-      img_url5
+      img_url5,
+      property_name,
+      admin_id
     })
     .then(res => res.data);
   return {
@@ -122,17 +127,26 @@ export function editProperties(
   };
 }
 
-export default function(state=initialState, action) {
+export function deleteProperty(propertyId){
+  let data = axios.delete(`/api/properties/${propertyId}`)
+  .then(res => res.data)
+  return{
+    type: DELETE_PROPERTY,
+    payload:data
+  }
+}
+
+export default function(state = initialState, action) {
   let { payload, type } = action;
   switch (type) {
     case GET_PROPERTIES + "_FULFILLED":
       return { ...state, error: false, properties: payload };
     case GET_PROPERTIES + "_REJECTED":
       return { ...state, error: payload };
-    case ADD_PROPERTY + '_FULFILLED':
-        return {...state, properties: payload, error: false }
-    case ADD_PROPERTY + '_REJECTED':
-        return {...state, error: payload}  
+    case ADD_PROPERTY + "_FULFILLED":
+      return { ...state, properties: payload, error: false };
+    case ADD_PROPERTY + "_REJECTED":
+      return { ...state, error: payload };
     case DELETE_PROPERTY + "_FULFILLED":
       return { ...state, properties: payload };
     case EDIT_PROPERTY + "_FULFILLED":

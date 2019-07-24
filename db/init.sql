@@ -25,8 +25,7 @@ CONSTRAINT renters_pk PRIMARY KEY (renter_id)
 
 CREATE TABLE properties (
 prop_id serial NOT NULL,
-property_name text,
-address TEXT NOT NULL UNIQUE,
+address TEXT NOT NULL ,
 num_beds integer NOT NULL,
 num_baths integer NOT NULL,
 square_footage integer NOT NULL,
@@ -46,6 +45,7 @@ img_url2 text,
 img_url3 text,
 img_url4 text,
 img_url5 text,
+property_name text
 ) ;
 
 
@@ -61,5 +61,5 @@ prop_id INTEGER NOT NULL
 ALTER TABLE renters ADD CONSTRAINT renters_fk0 FOREIGN KEY (prop_id) REFERENCES properties(prop_id);
 
 
-ALTER TABLE properties_admin ADD CONSTRAINT "properties_admin_fk0" FOREIGN KEY (prop_id) REFERENCES properties(prop_id);
+ALTER TABLE properties_admin ADD CONSTRAINT properties_admin_fk0 FOREIGN KEY (prop_id) REFERENCES properties(prop_id);
 ALTER TABLE properties_admin ADD CONSTRAINT properties_admin_fk1 FOREIGN KEY (admin_id) REFERENCES admin(admin_id);
