@@ -1,0 +1,4 @@
+.prop-container{
+    display: flex;
+    flex-direction: column;
+}

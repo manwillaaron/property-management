@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import "./Properties.css";
 import { connect } from "react-redux";
 import { getProperties } from "../../redux/propertiesReducer";
+import PropertyPreview from "../propertyInputs/PropertyPreview";
 import PropertyInputs from "../propertyInputs/PropertyInputs";
 
-
-class Properties extends Component {
+class PropertiesPreview extends Component {
   componentDidMount() {
+    console.log(this.props);
     let { adminId } = this.props;
     if (adminId) {
       this.props.getProperties(adminId);
@@ -22,17 +23,16 @@ class Properties extends Component {
 
   render() {
     const { properties } = this.props;
-    console.log(this.props);
+
+    console.log(properties);
     return (
-      <div>
+      <div className='prop-container'>
         {properties.map(property => {
-          console.log(property);
-          // if (property.prop_id === +this.props.match.params.prop_id)
-            return (
-              <div key={property.prop_id}>
-                <PropertyInputs {...property} />
-              </div>
-            );
+          return (
+            <div className='prop-container' key={property.prop_id}>
+              <PropertyPreview {...property} />
+            </div>
+          );
         })}
       </div>
     );
@@ -49,4 +49,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { getProperties }
-)(Properties);
+)(PropertiesPreview);

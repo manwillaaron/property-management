@@ -49,4 +49,8 @@ values
 'https://photos.zillowstatic.com/cc_ft_384/IS2zzlk8qwnrpw1000000000.webp',
 'https://photos.zillowstatic.com/cc_ft_384/ISmmvxjvhg7xpw1000000000.webp',
 'https://photos.zillowstatic.com/cc_ft_384/ISq55hdjn8k1mv1000000000.webp',
-'https://photos.zillowstatic.com/cc_ft_384/ISalixhss3udqw1000000000.webp')
+'https://photos.zillowstatic.com/cc_ft_384/ISalixhss3udqw1000000000.webp');
+
+insert into admin (username,password,first_name,last_name,email)
+values 
+('manwillaaron', '123', aaron, manwill, 123@g.com);

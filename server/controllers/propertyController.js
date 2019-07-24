@@ -1,106 +1,131 @@
 module.exports = {
-    async getProperties(req,res){
-        let {adminId} = req.params
-        const db = req.app.get('db')
-        let properties = await db.get_properties_by_admin(+adminId)
-        res.send(properties)
-    },
+  async getProperties(req, res) {
+    const db = req.app.get("db");
+    let properties = await db.get_properties_by_admin(req.session.admin.id);
+    res.send(properties);
+  },
 
-    async editProperty(req,res){
-        let{propertyId} = req.params
-        let {
-            propertyName,
-            address,
-            beds,
-            baths,
-            squareFootage,
-            acreage,
-            rent,
-            gasProvider,
-            electricProvider,
-            hasRenter,
-            hasFridge,
-            hasDishwasher,
-            hasWasherDryer,
-            mortgage,
-            taxes,
-            imgUrl,
-            imgUrl2,
-            imgUrl3,
-            imgUrl4,
-            imgUrl5
-            
-        } = req.body
-        const db = req.app.get('db')
-        let properties = await db.edit_property([
-            +propertyId,
-            propertyName,
-            address,
-            beds,
-            baths,
-            squareFootage,
-            acreage,
-            rent,
-            gasProvider,
-            electricProvider,
-            hasRenter,
-            hasFridge,
-            hasDishwasher,
-            hasWasherDryer,
-            mortgage,
-            taxes,
-            imgUrl,
-            imgUrl2,
-            imgUrl3,
-            imgUrl4,
-            imgUrl5
-        ])
-        res.send(properties)
-    },
-    
-    async deleteProperty(req,res) {
-        const {propertyId} = req.params
-        const db = req.app.get('db')
-        let properties = await db.delete_property([+propertyId, req.session.admin.adminId])
-        res.send(properties)
-    },
+  async editProperty(req, res) {
+    console.log('hit pc edit');
+    console.log(req.session);
+    let {id} = req.session.admin
+    console.log('aid',req.session.admin.id);
+    let { propertyId } = req.params;
+    console.log('pid',propertyId);
+    let {
+      address,
+      num_beds,
+      num_baths,
+      square_footage,
+      acreage,
+      rent,
+      gas_company,
+      electric_company,
+      has_renter,
+      fridge_included,
+      dishwasher_included,
+      washer_dryer_included,
+      mortgage,
+      tax_yearly,
+      img_url,
+      img_url2,
+      img_url3,
+      img_url4,
+      img_url5,
+      property_name
+    } = req.body;
+    const db = req.app.get("db");
+    let properties = await db.edit_property([
+      propertyId,
+      address,
+      num_beds,
+      num_baths,
+      square_footage,
+      acreage,
+      rent,
+      gas_company,
+      electric_company,
+      has_renter,
+      fridge_included,
+      dishwasher_included,
+      washer_dryer_included,
+      mortgage,
+      tax_yearly,
+      img_url,
+      img_url2,
+      img_url3,
+      img_url4,
+      img_url5,
+      property_name,
+      id
+    ]);
+    res.send(properties);
+  },
 
-    async addProperty(req,res){
-        const db = req.app.get('db')
-        let {
-            propertyName,
-            address,
-            beds,
-            baths,
-            squareFootage,
-            acreage,
-            rent,
-            gasProvider,
-            electricProvider,
-            hasRenter,
-            hasFridge,
-            hasDishwasher,
-            hasWasherDryer,
-            mortgage,
-            taxes
-        } = req.body
-        let properties = await db.add_property([
-             propertyName,
-            address,
-            beds,
-            baths,
-            squareFootage,
-            acreage,
-            rent,
-            gasProvider,
-            electricProvider,
-            hasRenter,
-            hasFridge,
-            hasDishwasher,
-            hasWasherDryer,
-            mortgage,
-            taxes
-        ])
-        res.send(properties)
-    }
-}
+  async deleteProperty(req, res) {
+    const { propertyId } = req.params;
+    let {id} = req.session.admin
+    const db = req.app.get("db");
+    let properties = await db.delete_property([
+      +propertyId,
+      id
+    ]);
+    res.send(properties);
+  },
+
+
+
+  async addProperty(req, res) {
+    const db = req.app.get("db");
+    const{id}= req.session.admin
+    console.log(req.body);
+    let {
+      address,
+      num_beds,
+      num_baths,
+      square_footage,
+      acreage,
+      rent,
+      gas_company,
+      electric_company,
+      has_renter,
+      fridge_included,
+      dishwasher_included,
+      washer_dryer_included,
+      mortgage,
+      tax_yearly,
+      img_url,
+      img_url2,
+      img_url3,
+      img_url4,
+      img_url5,
+      property_name,
+      
+    } = req.body;
+    console.log(id,req.session);
+    let properties = await db.add_property([
+      address,
+      +num_beds,
+      +num_baths,
+      +square_footage,
+      +acreage,
+      +rent,
+      gas_company,
+      electric_company,
+      has_renter,
+      fridge_included,
+      dishwasher_included,
+      washer_dryer_included,
+      +mortgage,
+      +tax_yearly,
+      img_url,
+      img_url2,
+      img_url3,
+      img_url4,
+      img_url5,
+      property_name,
+      id
+    ]);
+    res.send(properties);
+  }
+};

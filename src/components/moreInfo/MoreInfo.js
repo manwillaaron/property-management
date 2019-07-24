@@ -1,10 +1,11 @@
-import React from 'react';
-import './MoreInfo.css';
+import React from "react";
+import "./MoreInfo.css";
+import Properties from "../properties/Properties";
 
 function MoreInfo() {
   return (
     <div>
-     MoreInfo
+      <Properties />
     </div>
   );
 }
