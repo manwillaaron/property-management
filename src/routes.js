@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import AdminDashboard from "./components/adminDashboard/AdminDashboard.js";
 import Expenses from "./components/expenses/Expenses.js";
-import Login from "./components/Login/Login.js";
+import Login from "./components/login/Login.js";
 import MoreInfo from "./components/moreInfo/MoreInfo.js";
 import PropertyInputs from "./components/propertyInputs/PropertyInputs.js";
 import Properties from "./components/properties/Properties";
@@ -20,7 +20,7 @@ export default (
     <Route path='/register' component={Register}/> 
 
     <Route path="/propertyinput/:prop_id" component={PropertyInputs} />
-    <Route path="/add/propertyinput" component={PropertyInputs} />
+    {/* <Route path="/add/propertyinput" component={PropertyInputs} /> */}
     <Route path='/renters/:prop_id' component={Renter}></Route>
     {/* <Route path='/add/renter' component={Renter}></Route> */}
 

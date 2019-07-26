@@ -13,12 +13,7 @@ class Properties extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.adminId !== this.props.adminId) {
-      this.props.getProperties(this.props.adminId);
-    }
-    return;
-  }
+  
 
   render() {
     const { properties } = this.props;

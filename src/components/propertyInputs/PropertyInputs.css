@@ -1,7 +1,14 @@
 .moreinfo-box{
     width:100%;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
+
+}
+
+.property-images{
+    width: 100px;
+    height: 100px;
 
 }
 

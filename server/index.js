@@ -28,6 +28,7 @@ massive(CONNECTION_STRING).then(db => {
   console.log("db is all good");
   app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));
   app.set("db", db);
+  
 });
 
 app.use(initSession);

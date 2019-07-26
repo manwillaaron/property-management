@@ -73,6 +73,7 @@ module.exports = {
 
   async addProperty(req, res) {
     const db = req.app.get("db");
+    console.log( req.session.admin);
     const{id}= req.session.admin
     let {
       address,
@@ -99,19 +100,19 @@ module.exports = {
     } = req.body;
     let properties = await db.add_property([
       address,
-      +num_beds,
-      +num_baths,
-      +square_footage,
-      +acreage,
-      +rent,
+      num_beds,
+      num_baths,
+      square_footage,
+      acreage,
+      rent,
       gas_company,
       electric_company,
       has_renter,
       fridge_included,
       dishwasher_included,
       washer_dryer_included,
-      +mortgage,
-      +tax_yearly,
+      mortgage,
+      tax_yearly,
       img_url,
       img_url2,
       img_url3,
