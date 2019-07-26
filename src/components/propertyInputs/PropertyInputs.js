@@ -7,9 +7,10 @@ import {
 } from "../../redux/propertiesReducer";
 import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Header from "../header/Header";
 import Renter from "../renters/Renter";
+import { getAdmin } from "../../redux/adminReducer";
 
 class PropertyInputs extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class PropertyInputs extends Component {
   };
 
   componentDidUpdate(prevProps) {
+  
     if (
       prevProps.admin_id !== this.props.admin_id ||
       prevProps.properties !== this.props.properties
@@ -59,6 +61,13 @@ class PropertyInputs extends Component {
   }
 
   componentDidMount() {
+    this.props.getAdmin()
+    console.log(this.props);
+
+    if (!this.props.admin_id) {
+      return <Redirect to='/login'/>
+    }
+
     this.props.getRenters(+this.props.match.params.prop_id);
     console.log(this.props);
     this.setState({ prop_id: this.props.match.params.prop_id });
@@ -248,7 +257,7 @@ class PropertyInputs extends Component {
       img_url4,
       img_url5
     } = this.state;
-
+    
     console.log(this.props);
 
     return this.state.editing ||
@@ -501,5 +510,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { editProperties, addProperty, getProperties, getRenters, deleteRenter }
+  { editProperties, addProperty, getProperties, getRenters, deleteRenter, getAdmin }
 )(PropertyInputs);
