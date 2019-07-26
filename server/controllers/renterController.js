@@ -1,14 +1,17 @@
 
 module.exports = {
     async getRenters(req, res) {
-        let {prop_id} = req.query
-      const db = req.app.get("db");
-      let renters = await db.get_renters(prop_id);
+        const db = req.app.get("db");
+        let {propertyId} = req.params
+        console.log('hit get renters function ctrl', req.params)
+      let renters = await db.get_renters(+propertyId);
+      console.log(renters)
       res.send(renters);
     },
 
     async addRenter(req,res) {
         let {first_name,last_name, phone_number, email,prop_id} = req.body
+        // console.log('hit add renters function ctrl', req.body)
         const db = req.app.get('db')
         let renters = await db.add_renter([
             first_name,
@@ -35,10 +38,16 @@ module.exports = {
     },
 
     async deleteRenter(req,res) {
-        let {renter_id} = req.params
-        let {prop_id} = req.query
+        let {renterId} = req.params
+
+
+        console.log('delete req.params', req.params)
+        console.log('delete req.body', req.body.renters)
+        console.log('delete req.query', req.query)
+
+
         const  db = req.app.get('db')
-        let renters = await db.delete_renter([renter_id, prop_id])
+        let renters = await db.delete_renter(renterId)
         res.send(renters)
     }
 }

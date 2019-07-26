@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import './Renter.css'
 import { connect } from "react-redux";
 import {
   addRenter,
@@ -21,61 +22,86 @@ class Renter extends Component {
     };
   }
   componentDidMount() {
-    getRenters(this.props.match.params.prop_id);
+    console.log(this.props.match.params.prop_id);
+    this.props.getRenters(+this.props.match.params.prop_id);
+    this.setPropId();
   }
 
-  handleChange = (e) => {
+  setPropId = () => {
+    this.setState({ prop_id: +this.props.match.params.prop_id });
+  };
+
+  handleChange = e => {
     let { value, name } = e.target;
     this.setState({ [name]: value });
-    console.log(value);
-  }
+  };
   render() {
     console.log(this.props);
-
-    const { first_name, last_name, phone_number, email } = this.state;
-
-    return (
-      <div>
-        <Header />
+    if (!this.props.renter) {
+      const { first_name, last_name, phone_number, email } = this.state;
+      return (
         <div>
-          <h3>First Name</h3>
-          <input
-            onChange={this.handleChange}
-            name="first_name"
-            value={first_name}
-          />
-          <h3>Last Name</h3>
-          <input
-            onChange={this.handleChange}
-            name="last_name"
-            value={last_name}
-          />
-          <h3>Phone Number</h3>
-          <input
-            onChange={this.handleChange}
-            name="phone_number"
-            value={phone_number}
-          />
-          <h3>Email</h3>
-          <input onChange={this.handleChange} name="email" value={email} />
-          <button onClick={()=>this.props.addRenter(
-            first_name, 
-            last_name, 
-            phone_number, 
-            email, 
-            
-          this.props.match.params.prop_id
-          )}>
-            <Link to="/renters">Add</Link>
-          </button>
+          <Header />
+          <div>
+            <h3>First Name</h3>
+            <input
+              onChange={this.handleChange}
+              name="first_name"
+              value={first_name}
+            />
+            <h3>Last Name</h3>
+            <input
+              onChange={this.handleChange}
+              name="last_name"
+              value={last_name}
+            />
+            <h3>Phone Number</h3>
+            <input
+              onChange={this.handleChange}
+              name="phone_number"
+              value={phone_number}
+            />
+            <h3>Email</h3>
+            <input onChange={this.handleChange} name="email" value={email} />
+            <button
+              onClick={() =>
+                this.props.addRenter(
+                  first_name,
+                  last_name,
+                  phone_number,
+                  email,
+                  +this.state.prop_id
+                )
+              }
+            >
+              <Link to={`/propertyinput/${this.state.prop_id}`}>Add</Link>
+            </button>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      const { first_name, last_name, phone_number, email } = this.props.renters;
+
+      return (
+        <div className="renters-box">
+          <div className="renter-box">
+            <h4>First Name</h4>
+            <h5>{first_name}</h5>
+            <h4>Last Name</h4>
+            <h5>{last_name}</h5>
+            <h4>Phone Number</h4>
+            <h5>{phone_number}</h5>
+            <h4>Email</h4>
+            <h5>{email}</h5>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
 function mapStateToProps(state) {
-  return state.renters, state.properties;
+  return { renters: state.renters, properties: state.properties };
 }
 
 export default connect(

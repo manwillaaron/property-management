@@ -26,6 +26,7 @@ app.use(
 
 massive(CONNECTION_STRING).then(db => {
   console.log("db is all good");
+  app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));
   app.set("db", db);
 });
 
@@ -49,4 +50,4 @@ app.post('/api/renter/add', rc.addRenter)
 app.put('/api/renter/edit/:renterId', rc.editRenter)
 app.delete('/api/renter/delete/:renterId', rc.deleteRenter)
 
-app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));
+

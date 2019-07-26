@@ -24,9 +24,7 @@ module.exports = {
     let { username, password, first_name, last_name, email } = req.body;
     const db = req.app.get("db");
     let [existingAdmin] = await db.get_admin_by_username(username);
-console.log(username);
     if (existingAdmin) return res.status(401).send("Username already exists");
-    console.log('hit');
     let salt = await bcrypt.genSalt(saltRounds);
     let hash = await bcrypt.hash(password, salt);
     let [admin] = await db.create_admin([
@@ -36,13 +34,11 @@ console.log(username);
       last_name,
       email
     ]);
-    console.log(admin)
     req.session.admin = {
       username: username,
       id: admin.admin_id,
       loggedIn: true
     };
-    console.log(req.session.admin);
     res.send(req.session.admin);
   },
   async signout(req, res) {

@@ -6,12 +6,8 @@ module.exports = {
   },
 
   async editProperty(req, res) {
-    console.log('hit pc edit');
-    console.log(req.session);
     let {id} = req.session.admin
-    console.log('aid',req.session.admin.id);
     let { propertyId } = req.params;
-    console.log('pid',propertyId);
     let {
       address,
       num_beds,
@@ -78,7 +74,6 @@ module.exports = {
   async addProperty(req, res) {
     const db = req.app.get("db");
     const{id}= req.session.admin
-    console.log(req.body);
     let {
       address,
       num_beds,
@@ -102,7 +97,6 @@ module.exports = {
       property_name,
       
     } = req.body;
-    console.log(id,req.session);
     let properties = await db.add_property([
       address,
       +num_beds,

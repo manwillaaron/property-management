@@ -1,14 +1,15 @@
 import {ADD_RENTER, DELETE_RENTER, EDIT_RENTER, GET_RENTERS } from './actionTypes'
 import axios from "axios";
 
-const initialState = {
+export const initialState = {
     renters: [],
     error: false
 }
 
-export function getRenters(prop_id) {
-    let data = axios.get(`/api/renters/${prop_id}`)
-    .then(res=> res.data)
+export function getRenters(propertyId) {
+    console.log('hit get renters reducer function', propertyId)
+    let data = axios.get(`/api/renters/${propertyId}`)
+    .then(res => res.data)
     return {
         type: GET_RENTERS,
         payload: data
@@ -57,8 +58,10 @@ export function editRenter(
 
 }
 
-export function deleteRenter(renter_id, prop_id){
-    let data = axios.delete(`/api/renter/delete/${renter_id}`)
+export function deleteRenter(renterId){
+    console.log ('rcd',renterId)
+
+    let data = axios.delete(`/api/renter/delete/${renterId}` )
     .then(res => res.data)
     return{
         type: DELETE_RENTER,

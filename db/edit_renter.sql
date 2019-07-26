@@ -6,7 +6,7 @@ email = $5,
 property_manager_renter = $6
 where renter_id = $7;
 
-select * from renetrs r 
+select * from renters r 
 join properties p
 on p.prop_id = r.prop_id
-where prop_id = $1;
+where p.prop_id = $1;

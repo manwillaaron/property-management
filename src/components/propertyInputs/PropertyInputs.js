@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import "./PropertyInputs.css"
-import { editProperties, addProperty, getProperties } from "../../redux/propertiesReducer";
+import "./PropertyInputs.css";
+import {
+  editProperties,
+  addProperty,
+  getProperties
+} from "../../redux/propertiesReducer";
+import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
-import {Link} from 'react-router-dom'
-import Header from '../header/Header'
-
+import { Link, Redirect } from "react-router-dom";
+import Header from "../header/Header";
+import Renter from "../renters/Renter";
+import { getAdmin } from "../../redux/adminReducer";
 
 class PropertyInputs extends Component {
   constructor(props) {
@@ -31,80 +37,93 @@ class PropertyInputs extends Component {
       img_url3: "",
       img_url4: "",
       img_url5: "",
-      property_name: ""
+      property_name: "",
+      prop_id: "",
+      renters: []
     };
   }
 
-  switchEdit = ()=> {
-    const {editing} = this.state
-    this.setState({editing: !editing})
-    console.log(this.state.editing);
-  }
+  switchEdit = () => {
+    const { editing } = this.state;
+    this.setState({ editing: !editing });
+  };
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps.admin_id, this.props.admin_id );
-    if (prevProps.admin_id !== this.props.admin_id || prevProps.properties !== this.props.properties) {
-      this.props.getProperties(this.props.admin_id)
+  
+    if (
+      prevProps.admin_id !== this.props.admin_id ||
+      prevProps.properties !== this.props.properties
+    ) {
+      this.props.getProperties();
     }
-    
+
     return;
   }
 
   componentDidMount() {
-    if(this.props.match.params.prop_id){
+    this.props.getAdmin()
+    console.log(this.props);
+
+    if (!this.props.admin_id) {
+      return <Redirect to='/login'/>
+    }
+
+    this.props.getRenters(+this.props.match.params.prop_id);
+    console.log(this.props);
+    this.setState({ prop_id: this.props.match.params.prop_id });
+
+    // this.props.getRenters(this.state.props_id);
+    if (this.state.props_id) {
       let foundProp = this.props.properties.find(property => {
-        console.log(this.props.match.params.prop_id);
-          return property.prop_id === +this.props.match.params.prop_id;
-        })
-        let {
-          property_name,
-          address,
-          num_beds,
-          num_baths,
-          square_footage,
-          acreage,
-          rent,
-          gas_company,
-          electric_company,
-          has_renter,
-          fridge_included,
-          dishwasher_included,
-          washer_dryer_included,
-          mortgage,
-          tax_yearly,
-          img_url,
-          img_url2,
-          img_url3,
-          img_url4,
-          img_url5
-        } = foundProp;
+        return property.prop_id === this.state.prop_id;
+      });
+      let {
+        property_name,
+        address,
+        num_beds,
+        num_baths,
+        square_footage,
+        acreage,
+        rent,
+        gas_company,
+        electric_company,
+        has_renter,
+        fridge_included,
+        dishwasher_included,
+        washer_dryer_included,
+        mortgage,
+        tax_yearly,
+        img_url,
+        img_url2,
+        img_url3,
+        img_url4,
+        img_url5
+      } = foundProp;
 
-    this.setState({
-      property_name,
-      address,
-      num_beds,
-      num_baths,
-      square_footage,
-      acreage,
-      rent,
-      gas_company,
-      electric_company,
-      has_renter,
-      fridge_included,
-      dishwasher_included,
-      washer_dryer_included,
-      mortgage,
-      tax_yearly,
-      img_url,
-      img_url2,
-      img_url3,
-      img_url4,
-      img_url5
-    })
-
-  
+      this.setState({
+        property_name,
+        address,
+        num_beds,
+        num_baths,
+        square_footage,
+        acreage,
+        rent,
+        gas_company,
+        electric_company,
+        has_renter,
+        fridge_included,
+        dishwasher_included,
+        washer_dryer_included,
+        mortgage,
+        tax_yearly,
+        img_url,
+        img_url2,
+        img_url3,
+        img_url4,
+        img_url5
+      });
+    }
   }
-}
 
   addProperty = () => {
     let {
@@ -150,20 +169,17 @@ class PropertyInputs extends Component {
       img_url4,
       img_url5,
       property_name
-      )
-      this.switchEdit()
-      console.log(this.props);
-  }
+    );
+    this.switchEdit();
+  };
 
-  handleChange= e=>{
-    const {name,value} = e.target
-    this.setState({[name]: value})
-    console.log(value);
-  }
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
 
   editProperty = () => {
-    const {prop_id} = this.props.match.params
-    console.log(prop_id);
+    const { prop_id } = this.props.match.params;
     let {
       address,
       num_beds,
@@ -209,13 +225,16 @@ class PropertyInputs extends Component {
       img_url5,
       property_name,
       this.props.admin_id
-      )
-      this.switchEdit()
-      console.log(this.props);
-  }
+    );
+    this.switchEdit();
+  };
+
+  deleteRenter = rid => {
+    this.props.deleteRenter(rid);
+    this.props.getRenters(this.props.match.params.prop_id);
+  };
 
   render() {
-    console.log(this.props, this.state);
     let {
       property_name,
       address,
@@ -238,205 +257,258 @@ class PropertyInputs extends Component {
       img_url4,
       img_url5
     } = this.state;
-    return this.state.editing || this.props.match.path === "/add/propertyinput"  ? (
-     
+    
+    console.log(this.props);
+
+    return this.state.editing ||
+      this.props.match.path === "/add/propertyinput" ? (
       // this.props.properties.map(property => {
       //   if (property.prop_id === +this.props.match.params.prop_id)
       //     return (
-            <div>
-              <Header />
-              <h2>Property Name</h2>
-              <input
-                value={this.state.property_name}
-                onChange={this.handleChange}
-                name='property_name'
-              />
-              <h2>Address</h2>
-              <input
-               value={this.state.address}
-               onChange={this.handleChange}
-               name='address'
-               />
-              <h2>Bedrooms</h2>
-              <input  value={this.state.num_beds}
-                onChange={this.handleChange}
-                name='num_beds'
-                />
-              <h2>Bathrooms</h2>
-              <input 
-               value={this.state.num_baths}
-               onChange={this.handleChange}
-               name='num_baths'
-               />
-              <h2>Square Footage</h2>
-              <input 
-               value={this.state.square_footage}
-               onChange={this.handleChange}
-               name='square_footage'
-               />
-              <h2>Acreage</h2>
-              <input 
-               value={this.state.acreage}
-               onChange={this.handleChange}
-               name='acreage'
-                />
-              <h2>Rent</h2>
-              <input 
-               value={this.state.rent}
-               onChange={this.handleChange}
-               name='rent'
-                />
-              <h2>Gas Company</h2>
-              <input 
-               value={this.state.gas_company}
-               onChange={this.handleChange}
-               name='gas_company'
-               />
-              <h2>Electric Company</h2>
-              <input 
-               value={this.state.electric_company}
-               onChange={this.handleChange}
-               name='electric_company'
-               />
-              <h2>Has Renter</h2>
-              <input 
-               value={this.state.has_renter}
-               onChange={this.handleChange}
-               name='has_renter'
-               />
-              <h2>Fridge?</h2>
-              <input 
-               value={this.state.fridge_included}
-               onChange={this.handleChange}
-               name='fridge_included'
-               />
-              <h2>Diswasher?</h2>
-              <input 
-               value={this.state.dishwasher_included}
-               onChange={this.handleChange}
-               name='dishwasher_included'
-               />
-              <h2>Washer and Dryer?</h2>
-              <input 
-               value={this.state.washer_dryer_included}
-               onChange={this.handleChange}
-               name='washer_dryer_included'
-               />
-              <h2>Mortgage</h2>
-              <input 
-               value={this.state.mortgage}
-               onChange={this.handleChange}
-               name='mortgage'
-               />
-              <h2>Taxes</h2>
-              <input 
-               value={this.state.tax_yearly}
-               onChange={this.handleChange}
-               name='tax_yearly'
-               />
-              <h2>Image 1</h2>
-              <input 
-               value={this.state.img_url}
-               onChange={this.handleChange}
-               name='img_url'
-               />
-              <h2>Image 2</h2>
-              <input 
-               value={this.state.img_url2}
-               onChange={this.handleChange}
-               name='img_url2'
-               />
-              <h2>Image 3</h2>
-              <input 
-               value={this.state.img_url3}
-               onChange={this.handleChange}
-               name='img_url3'
-               />
-              <h2>Image 4</h2>
-              <input 
-               value={this.state.img_url4}
-               onChange={this.handleChange}
-               name='img_url4'/>
-              <h2>Image 5</h2>
-              <input 
-               value={this.state.img_url5}
-               onChange={this.handleChange}
-               name='img_url5'
-               />
-               {this.props.match.path === "/add/propertyinput" ?(
-                 console.log(this.props.match.path),
-              <button onClick={()=> this.addProperty()}>
-                <Link to= '/' >Add</Link>
-                </button>
-               ):(
-                console.log(this.props.match.path),
-                <button onClick={()=> this.editProperty()}>
-                  
-                <Link to= '/' >Save Changes</Link>
-                </button>
-               )}
-            </div>
-               
-       
-    ) : (
       <div>
-        <Header/>
-      <div>
-        
-        <div key={this.props.prop_id}>
-          <img src={img_url} alt="none" />
-          <img src={img_url2} alt="none" />
-          <img src={img_url3} alt="none" />
-          <img src={img_url4} alt="none" />
-          <img src={img_url5} alt="none" />
-          <h3>{property_name}</h3>
-          <h2>Address</h2>
-          <h3>{address}</h3>
-          <h2>Bedrooms</h2>
-          <h3>{num_beds}</h3>
-          <h2>Bathrooms</h2>
-          <h3>{num_baths}</h3>
-          <h2>Square Footage</h2>
-          <h3>{square_footage}</h3>
-          <h2>Acres</h2>
-          <h3>{acreage}</h3>
-          <h2>Rent</h2>
-          <h3>{rent}</h3>
-          <h2>Gas Company</h2>
-          <h3>{gas_company}</h3>
-          <h2>Electric Company</h2>
-          <h3>{electric_company}</h3>
-          <h2>Occupied</h2>
-          <h3>{JSON.stringify(has_renter)}</h3>
-          <h2>Fidge?</h2>
-          <h3>{fridge_included}</h3>
-          <h2>Diswasher?</h2>
-          <h3>{dishwasher_included}</h3>
-          <h2>Washer and Dryer?</h2>
-          <h3>{washer_dryer_included}</h3>
-          <h2>Mortgage</h2>
-          <h3>{mortgage}</h3>
-          <h2>Taxes</h2>
-          <h3>{tax_yearly}</h3>
-          <button onClick={(e)=>this.switchEdit()}>Edit</button>
-          {console.log(this.props)}
-          <button><Link to={`/renters/${this.props.match.params.prop_id}`}>renters info</Link></button>
-          
+        <Header prop_id={this.props.match.params} />
+        <div>
+          <h2>Property Name</h2>
+          <input
+            value={this.state.property_name}
+            onChange={this.handleChange}
+            name="property_name"
+          />
         </div>
+        <h2>Address</h2>
+        <input
+          value={this.state.address}
+          onChange={this.handleChange}
+          name="address"
+        />
+        <h2>Bedrooms</h2>
+        <input
+          value={this.state.num_beds}
+          onChange={this.handleChange}
+          name="num_beds"
+        />
+        <h2>Bathrooms</h2>
+        <input
+          value={this.state.num_baths}
+          onChange={this.handleChange}
+          name="num_baths"
+        />
+        <h2>Square Footage</h2>
+        <input
+          value={this.state.square_footage}
+          onChange={this.handleChange}
+          name="square_footage"
+        />
+        <h2>Acreage</h2>
+        <input
+          value={+this.state.acreage}
+          onChange={this.handleChange}
+          name="acreage"
+        />
+        <h2>Rent</h2>
+        <input
+          value={this.state.rent}
+          onChange={this.handleChange}
+          name="rent"
+        />
+        <h2>Gas Company</h2>
+        <input
+          value={this.state.gas_company}
+          onChange={this.handleChange}
+          name="gas_company"
+        />
+        <h2>Electric Company</h2>
+        <input
+          value={this.state.electric_company}
+          onChange={this.handleChange}
+          name="electric_company"
+        />
+        <h2>Has Renter</h2>
+        <input
+          value={this.state.has_renter}
+          onChange={this.handleChange}
+          name="has_renter"
+        />
+        <h2>Fridge?</h2>
+        <input
+          value={this.state.fridge_included}
+          onChange={this.handleChange}
+          name="fridge_included"
+        />
+        <h2>Diswasher?</h2>
+        <input
+          value={this.state.dishwasher_included}
+          onChange={this.handleChange}
+          name="dishwasher_included"
+        />
+        <h2>Washer and Dryer?</h2>
+        <input
+          value={this.state.washer_dryer_included}
+          onChange={this.handleChange}
+          name="washer_dryer_included"
+        />
+        <h2>Mortgage</h2>
+        <input
+          value={this.state.mortgage}
+          onChange={this.handleChange}
+          name="mortgage"
+        />
+        <h2>Taxes</h2>
+        <input
+          value={this.state.tax_yearly}
+          onChange={this.handleChange}
+          name="tax_yearly"
+        />
+        <h2>Image 1</h2>
+        <input
+          value={this.state.img_url}
+          onChange={this.handleChange}
+          name="img_url"
+        />
+        <h2>Image 2</h2>
+        <input
+          value={this.state.img_url2}
+          onChange={this.handleChange}
+          name="img_url2"
+        />
+        <h2>Image 3</h2>
+        <input
+          value={this.state.img_url3}
+          onChange={this.handleChange}
+          name="img_url3"
+        />
+        <h2>Image 4</h2>
+        <input
+          value={this.state.img_url4}
+          onChange={this.handleChange}
+          name="img_url4"
+        />
+        <h2>Image 5</h2>
+        <input
+          value={this.state.img_url5}
+          onChange={this.handleChange}
+          name="img_url5"
+        />
+        {this.props.match.path === "/add/propertyinput" ? (
+          <button onClick={() => this.addProperty()}>
+            <Link to="/">Add</Link>
+          </button>
+        ) : (
+          <button onClick={() => this.editProperty()}>
+            <Link to="/">Save Changes</Link>
+          </button>
+        )}
       </div>
+    ) : (
+      <div className="moreinfo-box">
+        <Header />
+        <div>
+          <div key={this.props.prop_id}>
+            <div className="property-images">
+              <img src={img_url} alt="" />
+              <img src={img_url2} alt="" />
+              <img src={img_url3} alt="" />
+              <img src={img_url4} alt="" />
+              <img src={img_url5} alt="" />
+            </div>
+            <div className="general-information">
+              <h3>{property_name}</h3>
+              <h2>Address</h2>
+              <h3>{address}</h3>
+              <h2>Bedrooms</h2>
+              <h3>{num_beds}</h3>
+              <h2>Bathrooms</h2>
+              <h3>{num_baths}</h3>
+              <h2>Square Footage</h2>
+              <h3>{square_footage}</h3>
+              <h2>Acres</h2>
+              <h3>{acreage}</h3>
+              <h2>Rent</h2>
+              <h3>{rent}</h3>
+            </div>
+            <div className="utility-information">
+              <h2>Gas Company</h2>
+              <h3>{gas_company}</h3>
+              <h2>Electric Company</h2>
+              <h3>{electric_company}</h3>
+            </div>
+            <div className="property-tf">
+              <h2>Occupied</h2>
+              <h3>{JSON.stringify(has_renter)}</h3>
+              <h2>Fidge?</h2>
+              <h3>{JSON.stringify(fridge_included)}</h3>
+              <h2>Diswasher?</h2>
+              <h3>{JSON.stringify(dishwasher_included)}</h3>
+              <h2>Washer and Dryer?</h2>
+              <h3>{JSON.stringify(washer_dryer_included)}</h3>
+            </div>
+            <div className="mortgage-taxes">
+              <h2>Mortgage</h2>
+              <h3>{mortgage}</h3>
+              <h2>Taxes</h2>
+              <h3>{tax_yearly}</h3>
+            </div>
+
+            <div className="renters-container">
+              {this.props.renters.map((renter, a) => (
+                <div className="renter-container" key={renter.renter_id}>
+                  <div className="renter-count-container">
+                    <h2 className="renter-count">renter {a + 1}</h2>
+                  </div>
+                  <div>
+                    <h4>Name</h4>
+                    <h5>
+                      {renter.first_name} {renter.last_name}
+                    </h5>
+                  </div>
+                  <div>
+                    <h4>Phone Number</h4>
+                    <h5>{renter.phone_number}</h5>
+                  </div>
+                  <div>
+                    <h4>Email</h4>
+                    <h5>{renter.email}</h5>
+                  </div>
+                  <div>
+                    <button onClick={e => this.switchEdit()}>Edit</button>
+                    {console.log(renter.prop_id)}
+                    <button onClick={() => this.deleteRenter(renter.renter_id)}>
+                      delete
+                    </button>
+
+                
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button>
+              <Link to={`/renters/${this.props.match.params.prop_id}`}>
+                add renter
+              </Link>
+            </button>
+            <button onClick={() => this.editProperty()}>
+              <Link to={`/propertyinput/${this.props.match.params.prop_id}`}>
+                Edit
+              </Link>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
     admin_id: state.admin.admin.id,
+    ...state.renters,
     ...state.properties
   };
 }
 
 export default connect(
   mapStateToProps,
-  { editProperties, addProperty, getProperties }
+  { editProperties, addProperty, getProperties, getRenters, deleteRenter, getAdmin }
 )(PropertyInputs);
