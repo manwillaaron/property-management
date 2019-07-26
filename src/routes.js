@@ -10,7 +10,6 @@ import PropertyPreview from "./components/propertyInputs/PropertyPreview.js";
 import Register from "./components/register/Register.js";
 import Renter from "./components/renters/Renter.js";
 
-// import ExpenseInputs from './components/ExpenseInputs/ExpenseInputs.js'
 
 export default (
   <Switch>
@@ -19,13 +18,11 @@ export default (
     <Route path="/expenses/:prop_id" component={Expenses} />
     <Route path="/login" component={Login} />
     <Route path='/register' component={Register}/> 
-    <Route path="/properties/:prop_id" component={Properties} />
-    {/* <Route path= '/expenseinput' component = {ExpenseInputs}/> */}
+
     <Route path="/propertyinput/:prop_id" component={PropertyInputs} />
-    {/* <Route path="/propertyinput" component={PropertyInputs} /> */}
     <Route path="/add/propertyinput" component={PropertyInputs} />
     <Route path='/renters/:prop_id' component={Renter}></Route>
-    <Route path='/renters' component={Renter}></Route>
+    {/* <Route path='/add/renter' component={Renter}></Route> */}
 
   </Switch>
 );

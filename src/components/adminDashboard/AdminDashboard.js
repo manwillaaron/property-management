@@ -9,7 +9,7 @@ import Header from '../header/Header'
 class AdminDashboard extends Component {
   componentDidMount() {
     if (!this.props.admin.admin.loggedIn) {
-      this.props.getAdmin(this.props.admin.admin.id);
+      this.props.getAdmin();
       console.log(this.props.admin.admin);
     }
   }

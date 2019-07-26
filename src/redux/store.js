@@ -7,6 +7,6 @@ import renterReducer from './renterReducer';
 const rootReducer = combineReducers({
   admin: adminReducer,
   properties: propertiesReducer,
-  enters: renterReducer
+  renters: renterReducer
 });
 export default createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(applyMiddleware(promiseMiddleware)));
