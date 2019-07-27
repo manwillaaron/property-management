@@ -6,7 +6,7 @@ import PropertyInputs from "../propertyInputs/PropertyInputs"
 function MoreInfo() {
   return (
     <div>
-      <PropertyInputs />
+      <Properties />
     </div>
   );
 }

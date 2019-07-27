@@ -1,5 +1,6 @@
 update properties 
-set   address = $2,
+set   
+            address = $2,
             num_beds = $3,
             num_baths = $4,
             square_footage = $5,
@@ -18,8 +19,7 @@ set   address = $2,
             img_url3 = $18,
             img_url4 = $19,
             img_url5 = $20,
-            property_name = $21
-            
+            property_name = $21      
 where prop_id = $1;
 
 select * from properties_admin pa

@@ -43,7 +43,7 @@ app.get("/api/admin", authCheck, ac.getAdmin);
 app.get("/api/properties/:adminId", pc.getProperties);
 app.put("/api/properties/:propertyId", pc.editProperty);
 app.delete("/api/properties/:propertyId", pc.deleteProperty);
-app.post("/api/properties/", pc.addProperty);
+app.post("/api/properties", pc.addProperty);
 
 //renters
 app.get('/api/renters/:propertyId', rc.getRenters)
