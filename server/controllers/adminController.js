@@ -7,16 +7,13 @@ module.exports = {
     const db = req.app.get("db");
     const [existingAdmin] = await db.get_admin_by_username(username);
     if (!existingAdmin) return res.status(401).send("Invalid username");
-
     let result = await bcrypt.compare(password, existingAdmin.password);
-
     if (result) {
       req.session.admin = {
         username: existingAdmin.username,
         id: existingAdmin.admin_id,
         loggedIn: true
       };
-
       res.send(req.session.admin);
     } else res.status(401).send("username or password incorrect");
   },
@@ -46,8 +43,6 @@ module.exports = {
     res.sendStatus(200);
   },
   async getAdmin(req, res) {
-    console.log('hit');
     res.send(req.session.admin);
-    console.log('hit');
   }
 };

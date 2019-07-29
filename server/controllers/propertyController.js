@@ -6,7 +6,7 @@ module.exports = {
   },
 
   async editProperty(req, res) {
-    let {id} = req.session.admin
+    let { id } = req.session.admin;
     let { propertyId } = req.params;
     let {
       address,
@@ -60,21 +60,15 @@ module.exports = {
 
   async deleteProperty(req, res) {
     const { propertyId } = req.params;
-    let {id} = req.session.admin
+    let { id } = req.session.admin;
     const db = req.app.get("db");
-    let properties = await db.delete_property([
-      +propertyId,
-      id
-    ]);
+    let properties = await db.delete_property([+propertyId, id]);
     res.send(properties);
   },
 
-
-
   async addProperty(req, res) {
     const db = req.app.get("db");
-    console.log( req.session.admin);
-    const{adminId}= req.params
+    const { adminId } = req.params;
     let {
       address,
       num_beds,
@@ -119,9 +113,7 @@ module.exports = {
       img_url5,
       property_name,
       adminId
-     
     ]);
-    console.log('properties',properties);
     res.send(properties);
   }
 };

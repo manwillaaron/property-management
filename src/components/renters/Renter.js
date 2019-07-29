@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import './Renter.css'
+import "./Renter.css";
 import { connect } from "react-redux";
 import {
   addRenter,
@@ -22,24 +22,20 @@ class Renter extends Component {
     };
   }
   componentDidMount() {
-    console.log(this.props.match.params.prop_id);
     this.props.getRenters(+this.props.match.params.prop_id);
     this.setPropId();
+  }
 
-    console.log('hit renters inputs', this.props);
-  
+  setPropId = () => {
+    this.setState({ prop_id: +this.props.match.params.prop_id });
+  };
 
-
-}
-setPropId = () => {
-  this.setState({ prop_id: +this.props.match.params.prop_id });
-};
   handleChange = e => {
     let { value, name } = e.target;
     this.setState({ [name]: value });
   };
+
   render() {
-    console.log(this.props);
     if (!this.props.renter) {
       const { first_name, last_name, phone_number, email } = this.state;
       return (

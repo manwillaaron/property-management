@@ -11,33 +11,30 @@ import { Link, Redirect } from "react-router-dom";
 import Header from "../header/Header";
 import { getAdmin } from "../../redux/adminReducer";
 import RenterDisplay from "../renters/RenterDisplay";
-import { throwStatement } from "@babel/types";
 
 class Properties extends Component {
   componentDidMount() {
-    console.log(this.props);
     this.props.getProperties();
+    this.props.getAdmin();
   }
 
   render() {
     if (!this.props.admin_id) return <Redirect to="/login" />;
-    console.log(this.props);
 
-    // if(!this.props.properties) this.props.getProperties();
-
-let property = {}
-  if(this.props.properties){
-  
-    property = this.props.properties.find(property => property.prop_id === +this.props.match.params.prop_id)
-
-  } else {
-      property = this.props.property.find(property => property.prop_id === +this.props.match.params.prop_id);
+    let property = {};
+    if (this.props.properties) {
+      property = this.props.properties.find(
+        property => property.prop_id === +this.props.match.params.prop_id
+      );
+    } else {
+      property = this.props.property.find(
+        property => property.prop_id === +this.props.match.params.prop_id
+      );
     }
-
-
 
     return (
       <div key={property.prop_id}>
+        <Header />
         <div className="property-images">
           <img src={property.img_url} alt="" />
           <img src={property.img_url2} alt="" />
@@ -97,7 +94,7 @@ function mapStateToProps(state) {
   return {
     admin_id: state.admin.admin.id,
     ...state.renters,
-     property: state.properties.properties
+    property: state.properties.properties
   };
 }
 

@@ -11,7 +11,6 @@ class AdminDashboard extends Component {
   componentDidMount() {
     if (!this.props.admin.admin.loggedIn) {
       this.props.getAdmin();
-      console.log(this.props);
       if (!this.props.properties) return this.props.getProperties();
     }
   }
@@ -26,7 +25,6 @@ class AdminDashboard extends Component {
   render() {
     console.log(this.props);
     if (!this.props.admin.admin.loggedIn) return <Redirect to="/login" />;
-    const { properties } = this.props;
     return (
       <div>
         <Header/>

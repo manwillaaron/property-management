@@ -22,7 +22,7 @@ class Register extends Component {
   };
 
   registerAdmin = () => {
-    let { username, password, first_name, last_name, email} = this.state;
+    let { username, password, first_name, last_name, email } = this.state;
     this.props.register(username, password, first_name, last_name, email);
   };
 
@@ -41,33 +41,30 @@ class Register extends Component {
             />
           </div>
           Password:{" "}
-            <input
-              value={password}
-              onChange={this.handleChange}
-              name="password"
-            />
-          </div>
-          <div>
-            First name:{" "}
-            <input
-              value={first_name}
-              onChange={this.handleChange}
-              name="first_name"
-            />
-            Last name:{" "}
-            <input
-              value={last_name}
-              onChange={this.handleChange}
-              name="last_name"
-            />
-            email:{" "}
-            <input
-              value={email}
-              onChange={this.handleChange}
-              name="email"
-            />
-            
-          <button onClick={() => this.registerAdmin(this.state.username)}><Link to='/'>register</Link></button>
+          <input
+            value={password}
+            onChange={this.handleChange}
+            name="password"
+          />
+        </div>
+        <div>
+          First name:{" "}
+          <input
+            value={first_name}
+            onChange={this.handleChange}
+            name="first_name"
+          />
+          Last name:{" "}
+          <input
+            value={last_name}
+            onChange={this.handleChange}
+            name="last_name"
+          />
+          email:{" "}
+          <input value={email} onChange={this.handleChange} name="email" />
+          <button onClick={() => this.registerAdmin(this.state.username)}>
+            <Link to="/">register</Link>
+          </button>
         </div>
       </div>
     );

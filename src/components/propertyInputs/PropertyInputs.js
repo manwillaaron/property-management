@@ -7,14 +7,13 @@ import {
 } from "../../redux/propertiesReducer";
 import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
-import { Link, Redirect} from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Header from "../header/Header";
 import { getAdmin } from "../../redux/adminReducer";
 
 class PropertyInputs extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       editing: false,
       address: "",
@@ -40,20 +39,17 @@ class PropertyInputs extends Component {
       prop_id: ""
     };
   }
-  
+
   componentDidMount() {
     if (this.props.match.path === "/propertyinput/:prop_id") {
       this.switchEdit();
-    }else {
-      this.setState({editing: false})
+    } else {
+      this.setState({ editing: false });
     }
-    console.log(this.state);
-    console.log(this.props);
+
     this.props.properties.find(property => {
-      console.log('property', property);
       if (+this.props.match.params.prop_id === property.prop_id) {
-        console.log('hit');
-         this.setState({
+        this.setState({
           address: property.address,
           num_beds: +property.num_beds,
           num_baths: +property.num_baths,
@@ -79,11 +75,10 @@ class PropertyInputs extends Component {
       }
     });
     this.props.getAdmin();
-    this.props.getProperties(this.props.admin_id);
+    // this.props.getProperties();
   }
 
   handleChange = e => {
-    console.log(this.props);
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -117,7 +112,6 @@ class PropertyInputs extends Component {
       property_name
     } = this.state;
 
-    console.log(this.state);
     return (
       <div>
         <Header prop_id={this.props.match.params} />
@@ -240,7 +234,7 @@ class PropertyInputs extends Component {
             onClick={() => {
               this.props.addProperty(
                 this.state.address,
-                 this.state.num_beds,
+                this.state.num_beds,
                 this.state.num_baths,
                 this.state.square_footage,
                 this.state.acreage,
@@ -260,8 +254,7 @@ class PropertyInputs extends Component {
                 this.state.img_url5,
                 this.state.property_name,
                 this.props.admin_id
-              )
-            
+              );
             }}
           >
             <Link to={`/`}>Add</Link>
