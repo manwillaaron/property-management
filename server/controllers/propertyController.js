@@ -74,7 +74,7 @@ module.exports = {
   async addProperty(req, res) {
     const db = req.app.get("db");
     console.log( req.session.admin);
-    const{id}= req.session.admin
+    const{adminId}= req.params
     let {
       address,
       num_beds,
@@ -95,8 +95,7 @@ module.exports = {
       img_url3,
       img_url4,
       img_url5,
-      property_name,
-      
+      property_name
     } = req.body;
     let properties = await db.add_property([
       address,
@@ -119,8 +118,10 @@ module.exports = {
       img_url4,
       img_url5,
       property_name,
-      id
+      adminId
+     
     ]);
+    console.log('properties',properties);
     res.send(properties);
   }
 };

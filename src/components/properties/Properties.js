@@ -1,34 +1,93 @@
 import React, { Component } from "react";
-import "./Properties.css";
+// import "./PropertyInputs.css";
+import {
+  editProperties,
+  addProperty,
+  getProperties
+} from "../../redux/propertiesReducer";
+import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
-import { getProperties } from "../../redux/propertiesReducer";
-import PropertyInputs from "../propertyInputs/PropertyInputs";
-
+import { Link, Redirect } from "react-router-dom";
+import Header from "../header/Header";
+import { getAdmin } from "../../redux/adminReducer";
+import RenterDisplay from "../renters/RenterDisplay";
+import { throwStatement } from "@babel/types";
 
 class Properties extends Component {
   componentDidMount() {
-    let { adminId } = this.props;
-    if (adminId) {
-      this.props.getProperties(adminId);
-    }
+    console.log(this.props);
+    this.props.getProperties();
   }
 
-  
-
   render() {
-    const { properties } = this.props;
+    if (!this.props.admin_id) return <Redirect to="/login" />;
     console.log(this.props);
+
+    // if(!this.props.properties) this.props.getProperties();
+
+let property = {}
+  if(this.props.properties){
+  
+    property = this.props.properties.find(property => property.prop_id === +this.props.match.params.prop_id)
+
+  } else {
+      property = this.props.property.find(property => property.prop_id === +this.props.match.params.prop_id);
+    }
+
+
+
     return (
-      <div>
-        {properties.map(property => {
-          console.log(property);
-          // if (property.prop_id === +this.props.match.params.prop_id)
-            return (
-              <div key={property.prop_id}>
-                <PropertyInputs {...property} />
-              </div>
-            );
-        })}
+      <div key={property.prop_id}>
+        <div className="property-images">
+          <img src={property.img_url} alt="" />
+          <img src={property.img_url2} alt="" />
+          <img src={property.img_url3} alt="" />
+          <img src={property.img_url4} alt="" />
+          <img src={property.img_url5} alt="" />
+        </div>
+        <div className="general-information">
+          <h2>property name</h2>
+          <h3>{property.property_name}</h3>
+          <h2>Address</h2>
+          <h3>{property.address}</h3>
+          <h2>Bedrooms</h2>
+          <h3>{property.num_beds}</h3>
+          <h2>Bathrooms</h2>
+          <h3>{property.num_baths}</h3>
+          <h2>Square Footage</h2>
+          <h3>{property.square_footage}</h3>
+          <h2>Acres</h2>
+          <h3>{property.acreage}</h3>
+          <h2>Rent</h2>
+          <h3>{property.rent}</h3>
+        </div>
+        <div className="utility-information">
+          <h2>Gas Company</h2>
+          <h3>{property.gas_company}</h3>
+          <h2>Electric Company</h2>
+          <h3>{property.electric_company}</h3>
+        </div>
+        <div className="property-tf">
+          <h2>Occupied</h2>
+          <h3>{JSON.stringify(property.has_renter)}</h3>
+          <h2>Fidge?</h2>
+          <h3>{JSON.stringify(property.fridge_included)}</h3>
+          <h2>Diswasher?</h2>
+          <h3>{JSON.stringify(property.dishwasher_included)}</h3>
+          <h2>Washer and Dryer?</h2>
+          <h3>{JSON.stringify(property.washer_dryer_included)}</h3>
+        </div>
+        <div className="mortgage-taxes">
+          <h2>Mortgage</h2>
+          <h3>{property.mortgage}</h3>
+          <h2>Taxes</h2>
+          <h3>{property.tax_yearly}</h3>
+        </div>
+
+        <Link to={`/propertyinput/${this.props.match.params.prop_id}`}>
+          Edit
+        </Link>
+        <RenterDisplay prop_id={property.prop_id} />
       </div>
     );
   }
@@ -36,12 +95,20 @@ class Properties extends Component {
 
 function mapStateToProps(state) {
   return {
-    adminId: state.admin.admin.id,
-    ...state.properties
+    admin_id: state.admin.admin.id,
+    ...state.renters,
+     property: state.properties.properties
   };
 }
 
 export default connect(
   mapStateToProps,
-  { getProperties }
+  {
+    editProperties,
+    addProperty,
+    getProperties,
+    getRenters,
+    deleteRenter,
+    getAdmin
+  }
 )(Properties);

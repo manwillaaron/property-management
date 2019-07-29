@@ -25,12 +25,15 @@ class Renter extends Component {
     console.log(this.props.match.params.prop_id);
     this.props.getRenters(+this.props.match.params.prop_id);
     this.setPropId();
-  }
 
-  setPropId = () => {
-    this.setState({ prop_id: +this.props.match.params.prop_id });
-  };
+    console.log('hit renters inputs', this.props);
+  
 
+
+}
+setPropId = () => {
+  this.setState({ prop_id: +this.props.match.params.prop_id });
+};
   handleChange = e => {
     let { value, name } = e.target;
     this.setState({ [name]: value });
