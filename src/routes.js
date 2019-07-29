@@ -8,7 +8,7 @@ import PropertyInputs from "./components/propertyInputs/PropertyInputs.js";
 import Properties from "./components/properties/Properties";
 import PropertyPreview from "./components/propertyInputs/PropertyPreview.js";
 import Register from "./components/register/Register.js";
-import Renter from "./components/renters/Renter.js";
+import Renter from "./components/renters/Renter";
 
 
 
@@ -27,7 +27,7 @@ export default (
     <Route path="/propertyinput/:prop_id" component={PropertyInputs} />
     <Route path="/add/propertyinput" component={PropertyInputs} />
     <Route path='/edit/renters/:prop_id' component={Renter}></Route>
-    <Route path='/add/renter' component={Renter}></Route>
+    <Route path='/add/renter/:prop_id' component={Renter}></Route>
 
   </Switch>
 );

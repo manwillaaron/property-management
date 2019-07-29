@@ -40,12 +40,13 @@ export function addProperty(
   img_url3,
   img_url4,
   img_url5,
-  property_name
+  property_name,
+  adminId
 ) {
   
   console.log('hit pr add');
   let data = axios
-    .post(`/api/properties`, {
+    .post(`/api/properties/${adminId}`, {
       address, 
       num_beds, 
       num_baths, 
@@ -67,7 +68,10 @@ export function addProperty(
       img_url5,
       property_name
     })
-    .then(res => res.data);
+    .then(res => {
+      console.log(res.data);
+      return res.data}
+      );
   return {
     type: ADD_PROPERTY,
     payload: data
@@ -120,8 +124,7 @@ export function editProperties(
       img_url3,
       img_url4,
       img_url5,
-      property_name,
-      admin_id
+      property_name
     })
     .then(res => {
       console.log(res.data);

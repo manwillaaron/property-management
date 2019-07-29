@@ -70,7 +70,7 @@ class RenterDisplay extends Component {
 
             <div>
             <button>
-                <Link to={`/renters/${this.props.prop_id}`}>
+                <Link to={`/add/renter/${this.props.prop_id}`}>
                 add renter
                 </Link>
             </button>

@@ -7,7 +7,7 @@ import {
 } from "../../redux/propertiesReducer";
 import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, Redirect} from "react-router-dom";
 import Header from "../header/Header";
 import { getAdmin } from "../../redux/adminReducer";
 
@@ -18,32 +18,34 @@ class PropertyInputs extends Component {
     this.state = {
       editing: false,
       address: "",
-      num_beds: null,
-      num_baths: null,
-      square_footage: null,
-      acreage: null,
-      rent: null,
+      num_beds: "",
+      num_baths: "",
+      square_footage: "",
+      acreage: "",
+      rent: "",
       gas_company: "",
       electric_company: "",
-      has_renter: null,
-      fridge_included: null,
-      dishwasher_included: null,
-      washer_dryer_included: null,
-      mortgage: null,
-      tax_yearly: null,
+      has_renter: "",
+      fridge_included: "",
+      dishwasher_included: "",
+      washer_dryer_included: "",
+      mortgage: "",
+      tax_yearly: "",
       img_url: "",
       img_url2: "",
       img_url3: "",
       img_url4: "",
       img_url5: "",
       property_name: "",
-      prop_id: null
+      prop_id: ""
     };
   }
   
   componentDidMount() {
     if (this.props.match.path === "/propertyinput/:prop_id") {
       this.switchEdit();
+    }else {
+      this.setState({editing: false})
     }
     console.log(this.state);
     console.log(this.props);
@@ -53,19 +55,19 @@ class PropertyInputs extends Component {
         console.log('hit');
          this.setState({
           address: property.address,
-          num_beds: property.num_beds,
-          num_baths: property.num_baths,
-          square_footage: property.square_footage,
-          acreage: property.acreage,
-          rent: property.rent,
+          num_beds: +property.num_beds,
+          num_baths: +property.num_baths,
+          square_footage: +property.square_footage,
+          acreage: +property.acreage,
+          rent: +property.rent,
           gas_company: property.gas_company,
           electric_company: property.electric_company,
           has_renter: property.has_renter,
           fridge_included: property.fridge_included,
           dishwasher_included: property.dishwasher_included,
           washer_dryer_included: property.washer_dryer_included,
-          mortgage: property.mortgage,
-          tax_yearly: property.tax_yearly,
+          mortgage: +property.mortgage,
+          tax_yearly: +property.tax_yearly,
           img_url: property.img_url,
           img_url2: property.img_url2,
           img_url3: property.img_url3,
@@ -76,22 +78,12 @@ class PropertyInputs extends Component {
         });
       }
     });
-   
-    // if(this.props.match.path !== '/add/propertyinput'||  this.props.match.path !=="/propertyinput/:prop_id"){
-    // let newProp = this.props.properties.reduce((max,obj) => obj.prop_id > max ? obj.prop_id: max, this.setState({prop_id: newProp[0].prop_id}) )
-    //   console.log(newProp);
-
-    // }
-
     this.props.getAdmin();
     this.props.getProperties(this.props.admin_id);
-    console.log(this.props);
-    // if (this.props.match.path !== "/add/propertyinput") {
-    //   this.setState({ editing: true });
-    // }
   }
 
   handleChange = e => {
+    console.log(this.props);
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -101,15 +93,8 @@ class PropertyInputs extends Component {
   };
 
   render() {
-    console.log(this.props.admin_id);
     if (!this.props.admin_id) return <Redirect to="/login" />;
-
-    
-
-    
-
     let {
-      prop_id,
       address,
       num_beds,
       num_baths,
@@ -225,19 +210,19 @@ class PropertyInputs extends Component {
               onClick={() =>
                 this.props.editProperties(
                   this.state.address,
-                  this.state.num_beds,
-                  this.state.num_baths,
-                  this.state.square_footage,
+                  +this.state.num_beds,
+                  +this.state.num_baths,
+                  +this.state.square_footage,
                   this.state.acreage,
-                  this.state.rent,
+                  +this.state.rent,
                   this.state.gas_company,
                   this.state.electric_company,
                   this.state.has_renter,
                   this.state.fridge_included,
                   this.state.dishwasher_included,
                   this.state.washer_dryer_included,
-                  this.state.mortgage,
-                  this.state.tax_yearly,
+                  +this.state.mortgage,
+                  +this.state.tax_yearly,
                   this.state.img_url,
                   this.state.img_url2,
                   this.state.img_url3,
@@ -247,7 +232,7 @@ class PropertyInputs extends Component {
                 )
               }
             >
-              <Link to={`/moreinfo/${this.props.prop_id}`}>Save Changes</Link>
+              <Link to={`/`}>Save Changes</Link>
             </button>
           </div>
         ) : (
@@ -255,7 +240,7 @@ class PropertyInputs extends Component {
             onClick={() => {
               this.props.addProperty(
                 this.state.address,
-                this.state.num_beds,
+                 this.state.num_beds,
                 this.state.num_baths,
                 this.state.square_footage,
                 this.state.acreage,
@@ -273,8 +258,9 @@ class PropertyInputs extends Component {
                 this.state.img_url3,
                 this.state.img_url4,
                 this.state.img_url5,
-                this.state.property_name
-              );
+                this.state.property_name,
+                this.props.admin_id
+              )
             
             }}
           >
