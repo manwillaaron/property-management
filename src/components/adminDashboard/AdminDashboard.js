@@ -23,15 +23,14 @@ class AdminDashboard extends Component {
   }
 
   render() {
-    console.log(this.props);
     if (!this.props.admin.admin.loggedIn) return <Redirect to="/login" />;
     return (
       <div>
-        <Header/>
+        <Header />
         <PropertiesPreview />
       </div>
-    )
-}
+    );
+  }
 }
 
 function mapStateToProps(state) {

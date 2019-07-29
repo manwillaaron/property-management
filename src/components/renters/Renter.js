@@ -73,7 +73,7 @@ class Renter extends Component {
                 )
               }
             >
-              <Link to={`/propertyinput/${this.state.prop_id}`}>Add</Link>
+              <Link to={`/moreinfo/${this.state.prop_id}`}>Add</Link>
             </button>
           </div>
         </div>

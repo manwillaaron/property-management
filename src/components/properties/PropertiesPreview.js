@@ -8,13 +8,15 @@ class PropertiesPreview extends Component {
   componentDidMount() {
     let { adminId } = this.props;
     if (adminId) {
+      console.log('hit');
       this.props.getProperties();
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.adminId !== this.props.adminId) {
-      this.props.getProperties(this.props.adminId);
+      console.log('hit2');
+      this.props.getProperties();
     }
     return;
   }

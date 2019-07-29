@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Login.css";
 import { login } from "../../redux/adminReducer";
 import { connect } from "react-redux";
-import { Redirect,Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 class Login extends Component {
   constructor() {
@@ -18,13 +18,8 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
-  loginAdmin = () => {
-    let { username, password } = this.state;
-    this.props.login(username, password);
-  };
-
   render() {
-    const { username, password } = this.state;
+    let { username, password } = this.state;
     if (this.props.admin.admin.loggedIn) return <Redirect to="/" />;
     return (
       <div>
@@ -35,7 +30,6 @@ class Login extends Component {
               value={username}
               onChange={this.handleChange}
               name="username"
-              type="text"
             />
           </div>
           <div>
@@ -44,14 +38,18 @@ class Login extends Component {
               value={password}
               onChange={this.handleChange}
               name="password"
-              type="password"
             />
           </div>
-          <button onClick={() =>this.loginAdmin()}><Link to='/' >Login</Link></button>
+          <button
+            onClick={() =>
+              this.props.login(username, password)
+            }
+          >
+            <Link to="/">Login</Link>
+          </button>
           <button>
-            <Link to= '/register'>register</Link>
-            
-            </button>
+            <Link to="/register">register</Link>
+          </button>
         </div>
       </div>
     );

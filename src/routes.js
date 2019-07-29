@@ -16,6 +16,7 @@ export default (
     <Route path="/login" component={Login} />
     <Route path="/register" component={Register} />
     <Route path="/propertyinput/:prop_id" component={PropertyInputs} />
+    <Route path="/add/renter/propertyinputs/:prop_id" component={PropertyInputs} />
     <Route path="/add/propertyinput" component={PropertyInputs} />
     <Route path="/edit/renters/:prop_id" component={Renter} />
     <Route path="/add/renter/:prop_id" component={Renter} />

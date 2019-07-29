@@ -46,36 +46,49 @@ class PropertyInputs extends Component {
     } else {
       this.setState({ editing: false });
     }
+    if(this.props.match.path === '/add/renter/propertyinputs/:prop_id'){
+      this.setState({editing: false})
+    }
 
     this.props.properties.find(property => {
       if (+this.props.match.params.prop_id === property.prop_id) {
-        this.setState({
-          address: property.address,
-          num_beds: +property.num_beds,
-          num_baths: +property.num_baths,
-          square_footage: +property.square_footage,
-          acreage: +property.acreage,
-          rent: +property.rent,
-          gas_company: property.gas_company,
-          electric_company: property.electric_company,
-          has_renter: property.has_renter,
-          fridge_included: property.fridge_included,
-          dishwasher_included: property.dishwasher_included,
-          washer_dryer_included: property.washer_dryer_included,
-          mortgage: +property.mortgage,
-          tax_yearly: +property.tax_yearly,
-          img_url: property.img_url,
-          img_url2: property.img_url2,
-          img_url3: property.img_url3,
-          img_url4: property.img_url4,
-          img_url5: property.img_url5,
-          property_name: property.property_name,
-          prop_id: property.prop_id
-        });
+        return(
+          this.setState({
+            address: property.address,
+            num_beds: +property.num_beds,
+            num_baths: +property.num_baths,
+            square_footage: +property.square_footage,
+            acreage: +property.acreage,
+            rent: +property.rent,
+            gas_company: property.gas_company,
+            electric_company: property.electric_company,
+            has_renter: property.has_renter,
+            fridge_included: property.fridge_included,
+            dishwasher_included: property.dishwasher_included,
+            washer_dryer_included: property.washer_dryer_included,
+            mortgage: +property.mortgage,
+            tax_yearly: +property.tax_yearly,
+            img_url: property.img_url,
+            img_url2: property.img_url2,
+            img_url3: property.img_url3,
+            img_url4: property.img_url4,
+            img_url5: property.img_url5,
+            property_name: property.property_name,
+            prop_id: property.prop_id
+          })
+        )
+        
       }
     });
     this.props.getAdmin();
-    // this.props.getProperties();
+    this.props.getProperties();
+  }
+
+  componentDidUpdate(pp) {
+    if(pp.renters.length < this.props.renters.length){
+      this.switchEdit()
+    }
+    
   }
 
   handleChange = e => {
