@@ -1,40 +1,50 @@
 import React, { Component } from "react";
-import "./Properties.css";
+import "./PropertiesPreview.css";
 import { connect } from "react-redux";
 import { getProperties } from "../../redux/propertiesReducer";
+import { getAllRenters } from "../../redux/renterReducer";
 import PropertyPreview from "../propertyInputs/PropertyPreview";
-import PropertyInputs from "../propertyInputs/PropertyInputs";
+import SMSForm from "../../SMS/SMSForm";
 
 class PropertiesPreview extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      adminId: this.props.adminId
+    };
+  }
   componentDidMount() {
-    console.log(this.props);
     let { adminId } = this.props;
+    this.props.getAllRenters(this.state.adminId);
+
     if (adminId) {
-      this.props.getProperties(adminId);
+      this.props.getProperties();
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.adminId !== this.props.adminId) {
-      this.props.getProperties(this.props.adminId);
+      this.props.getProperties();
     }
     return;
   }
 
   render() {
-    const { properties } = this.props;
-
-    console.log(properties);
+    const { properties} = this.props;
     return (
-      <div className='prop-container'>
+
+        <div className='map-container'>
         {properties.map(property => {
           return (
-            <div className='prop-container' key={property.prop_id}>
+            <div className="prop-container" key={property.prop_id}>
               <PropertyPreview {...property} />
             </div>
           );
         })}
       </div>
+      
+
+      
     );
   }
 }
@@ -42,11 +52,12 @@ class PropertiesPreview extends Component {
 function mapStateToProps(state) {
   return {
     adminId: state.admin.admin.id,
-    ...state.properties
+    ...state.properties,
+    renters: state.renters
   };
 }
 
 export default connect(
   mapStateToProps,
-  { getProperties }
+  { getProperties, getAllRenters }
 )(PropertiesPreview);

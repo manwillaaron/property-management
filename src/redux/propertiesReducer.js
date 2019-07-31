@@ -12,7 +12,6 @@ const initialState = {
 };
 
 export function getProperties(admin_id) {
-  
   let data = axios.get(`/api/properties/${admin_id}`).then(res => res.data);
   return {
     type: GET_PROPERTIES,
@@ -43,23 +42,21 @@ export function addProperty(
   property_name,
   adminId
 ) {
-  
-  console.log('hit pr add');
   let data = axios
     .post(`/api/properties/${adminId}`, {
-      address, 
-      num_beds, 
-      num_baths, 
-      square_footage, 
-      acreage, 
-      rent, 
-      gas_company, 
-      electric_company, 
+      address,
+      num_beds,
+      num_baths,
+      square_footage,
+      acreage,
+      rent,
+      gas_company,
+      electric_company,
       has_renter,
-      fridge_included, 
-      dishwasher_included, 
-      washer_dryer_included, 
-      mortgage, 
+      fridge_included,
+      dishwasher_included,
+      washer_dryer_included,
+      mortgage,
       tax_yearly,
       img_url,
       img_url2,
@@ -68,10 +65,7 @@ export function addProperty(
       img_url5,
       property_name
     })
-    .then(res => {
-      console.log(res.data);
-      return res.data}
-      );
+    .then(res => res.data);
   return {
     type: ADD_PROPERTY,
     payload: data
@@ -102,7 +96,6 @@ export function editProperties(
   property_name,
   admin_id
 ) {
-  console.log('hit pr edit');
   let data = axios
     .put(`/api/properties/${propertyId}`, {
       address,
@@ -126,22 +119,21 @@ export function editProperties(
       img_url5,
       property_name
     })
-    .then(res => {
-      console.log(res.data);
-    return res.data});
+    .then(res => res.data);
   return {
     type: EDIT_PROPERTY,
     payload: data
   };
 }
 
-export function deleteProperty(propertyId){
-  let data = axios.delete(`/api/properties/${propertyId}`)
-  .then(res => res.data)
-  return{
+export function deleteProperty(propertyId) {
+  let data = axios
+    .delete(`/api/properties/${propertyId}`)
+    .then(res => res.data);
+  return {
     type: DELETE_PROPERTY,
-    payload:data
-  }
+    payload: data
+  };
 }
 
 export default function(state = initialState, action) {
@@ -152,7 +144,7 @@ export default function(state = initialState, action) {
     case GET_PROPERTIES + "_REJECTED":
       return { ...state, error: payload };
     case ADD_PROPERTY + "_FULFILLED":
-      return {properties: payload, error: false };
+      return { properties: payload, error: false };
     case ADD_PROPERTY + "_REJECTED":
       return { ...state, error: payload };
     case DELETE_PROPERTY + "_FULFILLED":
