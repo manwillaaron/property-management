@@ -1,10 +1,18 @@
 module.exports = {
+  async getAllRenters(req, res) {
+    const db = req.app.get("db");
+    let { adminId} = req.params
+    let renters = await db.get_all_renters(+adminId);
+    res.send(renters);
+  },
+  
   async getRenters(req, res) {
     const db = req.app.get("db");
     let { propertyId } = req.params;
     let renters = await db.get_renters(+propertyId);
     res.send(renters);
   },
+
 
   async addRenter(req, res) {
     let { first_name, last_name, phone_number, email, prop_id } = req.body;

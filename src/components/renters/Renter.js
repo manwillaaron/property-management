@@ -21,8 +21,8 @@ class Renter extends Component {
       prop_id: ""
     };
   }
-  componentDidMount() {
-    this.props.getRenters(+this.props.match.params.prop_id);
+  async componentDidMount() {
+   await this.props.getRenters(+this.props.match.params.prop_id);
     this.setPropId();
   }
 

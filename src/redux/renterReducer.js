@@ -2,19 +2,30 @@ import {
   ADD_RENTER,
   DELETE_RENTER,
   EDIT_RENTER,
-  GET_RENTERS
+  GET_RENTERS,
+  GET_ALL_RENTERS
 } from "./actionTypes";
 import axios from "axios";
 
-export const initialState = {
+const initialState = {
   renters: [],
   error: false
 };
 
 export function getRenters(propertyId) {
   let data = axios.get(`/api/renters/${propertyId}`).then(res => res.data);
+
   return {
     type: GET_RENTERS,
+    payload: data
+  };
+}
+
+export function getAllRenters(adminId) {
+  let data = axios.get(`/api/all/renters/${adminId}`).then(res => res.data);
+
+  return {
+    type: GET_ALL_RENTERS,
     payload: data
   };
 }
@@ -76,6 +87,10 @@ export default function(state = initialState, action) {
     case GET_RENTERS + "_FULFILLED":
       return { ...state, error: false, renters: payload };
     case GET_RENTERS + "_REJECTED":
+      return { ...state, error: payload };
+    case GET_ALL_RENTERS + "_FULFILLED":
+      return { ...state, error: false, renters: payload };
+    case GET_ALL_RENTERS + "_REJECTED":
       return { ...state, error: payload };
     case ADD_RENTER + "_FULFILLED":
       return { ...state, renters: payload, error: false };

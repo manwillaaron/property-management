@@ -22,35 +22,48 @@ class Login extends Component {
     let { username, password } = this.state;
     if (this.props.admin.admin.loggedIn) return <Redirect to="/" />;
     return (
-      <div>
-        <div>
-          <div>
-            Username:{" "}
-            <input
-              value={username}
-              onChange={this.handleChange}
-              name="username"
-            />
+      <div className="login-page">
+        <h1 className='title'>RentalOps</h1>
+        <div className="login-box">
+        <h1 className='login-title'>Login</h1>
+          <div className="username-password-input-container">
+            
+            <div className="username">
+             <h1>Username:</h1>
+              <input
+                className="input"
+                value={username}
+                onChange={this.handleChange}
+                name="username"
+              />
+            </div>
+            <div className="password">
+             <h1>Password:{" "}</h1> 
+              <input
+                className="input"
+                value={password}
+                onChange={this.handleChange}
+                name="password"
+              />
+            </div>
           </div>
-          <div>
-            Password:{" "}
-            <input
-              value={password}
-              onChange={this.handleChange}
-              name="password"
-            />
+          <div className='button-container'>
+            <button
+              className="button"
+              onClick={() => this.props.login(username, password)}
+            >
+              <Link 
+              style={{ color: 'black', textDecoration: 'none'}}
+              to="/">Login</Link>
+            </button>
+            <button className="button">
+              <Link 
+              style={{ color: 'black', textDecoration: 'none'}}
+              to="/register">Register</Link>
+            </button>
           </div>
-          <button
-            onClick={() =>
-              this.props.login(username, password)
-            }
-          >
-            <Link to="/">Login</Link>
-          </button>
-          <button>
-            <Link to="/register">register</Link>
-          </button>
         </div>
+        <div/>
       </div>
     );
   }

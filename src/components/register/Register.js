@@ -30,42 +30,57 @@ class Register extends Component {
     const { username, password, first_name, last_name, email } = this.state;
     if (this.props.admin.admin.loggedIn) return <Redirect to="/" />;
     return (
-      <div>
-        <div>
-          <div>
-            Username:{" "}
-            <input
-              value={username}
-              onChange={this.handleChange}
-              name="username"
-            />
+      <div className="register-page">
+        <h1 className='title'>RentOps</h1>
+        <div className="all-info">
+          <h1 className='register-title'>Register</h1>
+          <div className="username-password-container">
+            <div className="username-password-boxes">
+              <h1>Username: </h1>
+              <input
+                value={username}
+                onChange={this.handleChange}
+                name="username"
+              />
+            </div>
+            <div className="username-password-boxes">
+              <h1>Password: {" "} </h1>
+              <input
+                value={password}
+                onChange={this.handleChange}
+                name="password"
+              />
+            </div>
           </div>
-          Password:{" "}
-          <input
-            value={password}
-            onChange={this.handleChange}
-            name="password"
-          />
+          <div className="more-info-container">
+            <div className="moreinfo-boxes">
+              <h1>First name: </h1>
+              <input
+                value={first_name}
+                onChange={this.handleChange}
+                name="first_name"
+              />
+            </div>
+            <div className="moreinfo-boxes">
+              <h1>Last name: </h1>
+              <input
+                value={last_name}
+                onChange={this.handleChange}
+                name="last_name"
+              />
+            </div>
+            <div className="moreinfo-boxes">
+              <h1>email: </h1>
+              <input value={email} onChange={this.handleChange} name="email" />
+            </div>
+          </div>
+          <div className="register-button">
+            <button onClick={() => this.registerAdmin(this.state.username)}>
+              <Link to="/">register</Link>
+            </button>
+          </div>
         </div>
-        <div>
-          First name:{" "}
-          <input
-            value={first_name}
-            onChange={this.handleChange}
-            name="first_name"
-          />
-          Last name:{" "}
-          <input
-            value={last_name}
-            onChange={this.handleChange}
-            name="last_name"
-          />
-          email:{" "}
-          <input value={email} onChange={this.handleChange} name="email" />
-          <button onClick={() => this.registerAdmin(this.state.username)}>
-            <Link to="/">register</Link>
-          </button>
-        </div>
+        <div/>
       </div>
     );
   }

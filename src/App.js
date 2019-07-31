@@ -6,7 +6,7 @@ import "./reset.css";
 function App() {
   return (
     <div className='main-container'>
-      <div>{routes}</div>
+     {routes}
     </div>
   );
 }

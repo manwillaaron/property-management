@@ -6,6 +6,7 @@ import { getAdmin } from "../../redux/adminReducer";
 import { getProperties } from "../../redux/propertiesReducer";
 import PropertiesPreview from "../properties/PropertiesPreview";
 import Header from "../header/Header";
+import SMSForm from '../../SMS/SMSForm';
 
 class AdminDashboard extends Component {
   componentDidMount() {
@@ -25,9 +26,10 @@ class AdminDashboard extends Component {
   render() {
     if (!this.props.admin.admin.loggedIn) return <Redirect to="/login" />;
     return (
-      <div>
+      <div  className='admindash-containter'>
         <Header />
         <PropertiesPreview />
+        <SMSForm/>
       </div>
     );
   }
