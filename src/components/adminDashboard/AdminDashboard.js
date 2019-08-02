@@ -6,13 +6,18 @@ import { getAdmin } from "../../redux/adminReducer";
 import { getProperties } from "../../redux/propertiesReducer";
 import PropertiesPreview from "../properties/PropertiesPreview";
 import Header from "../header/Header";
-import SMSForm from '../../SMS/SMSForm';
+import SMSForm from "../../SMS/SMSForm";
 
 class AdminDashboard extends Component {
   componentDidMount() {
-    if (!this.props.admin.admin.loggedIn) {
-      this.props.getAdmin();
-      if (!this.props.properties) return this.props.getProperties();
+
+    console.log('!%^R!^%R^!%$^%!$',JSON.parse(this.props.admin.admin.renterCheck));
+    if (JSON.parse(this.props.admin.admin.renterCheck) === true) return <Redirect to="/renter" />;
+    
+    if (!this.props.admin.admin.loggedIn) { 
+       this.props.getAdmin();
+
+      if (!this.props.properties) this.props.getProperties();
     }
   }
 
@@ -24,12 +29,16 @@ class AdminDashboard extends Component {
   }
 
   render() {
-    if (!this.props.admin.admin.loggedIn) return <Redirect to="/login" />;
+    let { loggedIn, renterCheck } = this.props.admin.admin;
+    console.log(this.props);
+    if (!loggedIn) return <Redirect to="/login" />;
+    if (JSON.parse(this.props.admin.admin.renterCheck) === true) return <Redirect to="/renter" />;
+
     return (
-      <div  className='admindash-containter'>
+      <div className="admindash-containter">
         <Header />
         <PropertiesPreview />
-        <SMSForm/>
+        <SMSForm />
       </div>
     );
   }

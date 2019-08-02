@@ -1,5 +1,10 @@
 import axios from "axios";
-import { REGISTER, LOGIN, GET_ADMIN, SIGNOUT} from "./actionTypes";
+import {
+  REGISTER,
+  LOGIN,
+  GET_ADMIN,
+  SIGNOUT
+} from "./actionTypes";
 
 const initialState = {
   admin: {},
@@ -7,9 +12,27 @@ const initialState = {
   redirect: false
 };
 
-export const register = (username, password, first_name, last_name, email) => {
+export const register = (
+  username,
+  password,
+  first_name,
+  last_name,
+  phone_number,
+  email,
+  is_renter,
+  property_manager
+) => {
   let data = axios
-    .post("/api/register", { username, password, first_name, last_name, email })
+    .post("/api/register", {
+      username,
+      password,
+      first_name,
+      last_name,
+      phone_number,
+      email,
+      is_renter,
+      property_manager
+    })
     .then(res => res.data);
   return {
     type: REGISTER,
@@ -28,10 +51,7 @@ export const login = (username, password) => {
 };
 
 export const getAdmin = () => {
-  let data = axios.get("/api/admin").then(res => {
-    return res.data;
-  });
-
+  let data = axios.get("/api/admin").then(res => res.data);
   return {
     type: GET_ADMIN,
     payload: data
@@ -39,12 +59,12 @@ export const getAdmin = () => {
 };
 
 export const signout = () => {
-  let data = axios.delete("/api/signout").then(res => res.data)
-  return{
-    type:SIGNOUT,
-    payload:data
-  }
-}
+  let data = axios.delete("/api/signout").then(res => res.data);
+  return {
+    type: SIGNOUT,
+    payload: data
+  };
+};
 
 export default function(state = initialState, action) {
   let { type, payload } = action;
@@ -61,8 +81,8 @@ export default function(state = initialState, action) {
       return { ...state, admin: payload, error: false };
     case GET_ADMIN + "_REJECTED":
       return { ...state, redirect: true, error: payload };
-      case SIGNOUT + "_FULFILLED":
-        return {...state, redirect: true, admin: payload}
+    case SIGNOUT + "_FULFILLED":
+      return { ...state, redirect: true, admin: payload };
     default:
       return state;
   }

@@ -3,8 +3,8 @@ import "./PropertiesPreview.css";
 import { connect } from "react-redux";
 import { getProperties } from "../../redux/propertiesReducer";
 import { getAllRenters } from "../../redux/renterReducer";
+import { getAdmin } from "../../redux/adminReducer";
 import PropertyPreview from "../propertyInputs/PropertyPreview";
-import SMSForm from "../../SMS/SMSForm";
 
 class PropertiesPreview extends Component {
   constructor(props) {
@@ -14,12 +14,8 @@ class PropertiesPreview extends Component {
     };
   }
   componentDidMount() {
-    let { adminId } = this.props;
-    this.props.getAllRenters(this.state.adminId);
-
-    if (adminId) {
-      this.props.getProperties();
-    }
+    this.props.getAllRenters();
+    this.props.getProperties();
   }
 
   componentDidUpdate(prevProps) {
@@ -30,10 +26,9 @@ class PropertiesPreview extends Component {
   }
 
   render() {
-    const { properties} = this.props;
+    const { properties } = this.props;
     return (
-
-        <div className='map-container'>
+      <div className="map-container">
         {properties.map(property => {
           return (
             <div className="prop-container" key={property.prop_id}>
@@ -42,9 +37,6 @@ class PropertiesPreview extends Component {
           );
         })}
       </div>
-      
-
-      
     );
   }
 }
@@ -53,11 +45,11 @@ function mapStateToProps(state) {
   return {
     adminId: state.admin.admin.id,
     ...state.properties,
-    renters: state.renters
+    renters: state.renters.renters
   };
 }
 
 export default connect(
   mapStateToProps,
-  { getProperties, getAllRenters }
+  { getProperties, getAllRenters, getAdmin }
 )(PropertiesPreview);

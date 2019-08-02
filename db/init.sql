@@ -8,6 +8,16 @@ email TEXT NOT NULL,
 CONSTRAINT admin_pk PRIMARY KEY (admin_id)
 ) ;
 
+CREATE TABLE admin (
+admin_id serial NOT NULL,
+username TEXT NOT NULL UNIQUE,
+password TEXT NOT NULL,
+first_name TEXT NOT NULL,
+last_name TEXT NOT NULL,
+email TEXT NOT NULL,
+CONSTRAINT admin_pk PRIMARY KEY (admin_id)
+) ;
+
 
 
 CREATE TABLE renters (
@@ -17,7 +27,7 @@ last_name TEXT NOT NULL,
 phone_number integer NOT NULL UNIQUE,
 email TEXT NOT NULL UNIQUE,
 prop_id integer NOT NULL,
-property_manager_renter BOOLEAN NOT NULL,
+property_manager_renter BOOLEAN,
 CONSTRAINT renters_pk PRIMARY KEY (renter_id)
 ) ;
 

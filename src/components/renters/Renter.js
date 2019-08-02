@@ -8,26 +8,33 @@ import {
   deleteRenter,
   getRenters
 } from "../../redux/renterReducer";
+
+import {getAdmin} from '../../redux/adminReducer'
 import Header from "../header/Header";
 
 class Renter extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      username: "",
       first_name: "",
       last_name: "",
-      phone_number: "",
+      phone_number: "+1",
       email: "",
-      prop_id: ""
+      prop_id: "",
+      admin: []
     };
   }
   async componentDidMount() {
-   await this.props.getRenters(+this.props.match.params.prop_id);
+   await this.props.getAdmin();
+   console.log(this.props);
+
     this.setPropId();
   }
 
   setPropId = () => {
-    this.setState({ prop_id: +this.props.match.params.prop_id });
+    this.setState({ prop_id: this.props.match.params.prop_id });
+    console.log(this.props.match.params.prop_id );
   };
 
   handleChange = e => {
@@ -36,12 +43,17 @@ class Renter extends Component {
   };
 
   render() {
-    if (!this.props.renter) {
-      const { first_name, last_name, phone_number, email } = this.state;
+      const {username, first_name, last_name, phone_number, email } = this.state;
       return (
         <div>
           <Header />
           <div>
+            <h3>Temp Username</h3>
+            <input
+              onChange={this.handleChange}
+              name="username"
+              value={username}
+            />
             <h3>First Name</h3>
             <input
               onChange={this.handleChange}
@@ -63,8 +75,9 @@ class Renter extends Component {
             <h3>Email</h3>
             <input onChange={this.handleChange} name="email" value={email} />
             <button
-              onClick={() =>
+              onClick={() => 
                 this.props.addRenter(
+                  username,
                   first_name,
                   last_name,
                   phone_number,
@@ -77,33 +90,16 @@ class Renter extends Component {
             </button>
           </div>
         </div>
-      );
-    } else {
-      const { first_name, last_name, phone_number, email } = this.props.renters;
-
-      return (
-        <div className="renters-box">
-          <div className="renter-box">
-            <h4>First Name</h4>
-            <h5>{first_name}</h5>
-            <h4>Last Name</h4>
-            <h5>{last_name}</h5>
-            <h4>Phone Number</h4>
-            <h5>{phone_number}</h5>
-            <h4>Email</h4>
-            <h5>{email}</h5>
-          </div>
-        </div>
-      );
+      );   
     }
   }
-}
+
 
 function mapStateToProps(state) {
-  return { renters: state.renters, properties: state.properties };
+  return { admin: state.admin, properties: state.properties };
 }
 
 export default connect(
   mapStateToProps,
-  { getRenters, addRenter, editRenter, deleteRenter }
+  { getRenters, addRenter, editRenter, deleteRenter, getAdmin }
 )(Renter);

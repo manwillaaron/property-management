@@ -1,30 +1,48 @@
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
+
 module.exports = {
   async getAllRenters(req, res) {
     const db = req.app.get("db");
-    let { adminId} = req.params
-    let renters = await db.get_all_renters(+adminId);
+    let { id } = req.session.admin;
+    let renters = await db.get_all_renters(id);
     res.send(renters);
   },
-  
+
   async getRenters(req, res) {
     const db = req.app.get("db");
     let { propertyId } = req.params;
-    let renters = await db.get_renters(+propertyId);
-    res.send(renters);
+    let admin = await db.get_renters(+propertyId);
+    res.send(admin);
   },
 
-
   async addRenter(req, res) {
-    let { first_name, last_name, phone_number, email, prop_id } = req.body;
     const db = req.app.get("db");
-    let renters = await db.add_renter([
+
+    let {
       first_name,
       last_name,
       phone_number,
       email,
-      prop_id
+      propertyId
+    } = req.body;
+
+    let username = email
+    let [existingAdmin] = await db.get_admin_by_username(email);
+    if (existingAdmin) return res.status(401).send("Username already exists");
+    let salt = await bcrypt.genSalt(saltRounds);
+    let password = await bcrypt.hash(phone_number, salt);
+
+    let admin = await db.add_renter([
+      username,
+      password,
+      first_name,
+      last_name,
+      phone_number,
+      email,
+      propertyId
     ]);
-    res.send(renters);
+    res.send(admin);
   },
   async editRenter(req, res) {
     let {
@@ -36,7 +54,7 @@ module.exports = {
     } = req.body;
     let { prop_id } = req.params;
     const db = req.app.get("db");
-    let renters = await db.edit_renter([
+    let admin = await db.edit_renter([
       prop_id,
       first_name,
       last_name,
@@ -44,13 +62,13 @@ module.exports = {
       email,
       property_manager_renter
     ]);
-    res.send(renters);
+    res.send(admin);
   },
 
   async deleteRenter(req, res) {
-    let { renterId } = req.params;
+    let { admin_id, propertyId } = req.params;
     const db = req.app.get("db");
-    let renters = await db.delete_renter(renterId);
-    res.send(renters);
+    let admin = await db.delete_renter([+admin_id, +propertyId]);
+    res.send(admin);
   }
 };

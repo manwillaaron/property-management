@@ -30,14 +30,22 @@ export function getAllRenters(adminId) {
   };
 }
 
-export function addRenter(first_name, last_name, phone_number, email, prop_id) {
+export function addRenter(
+  username,
+  first_name,
+  last_name,
+  phone_number,
+  email,
+  propertyId
+) {
   let data = axios
-    .post("/api/renter/add", {
+    .post(`/api/renter/add`, {
+      username,
       first_name,
       last_name,
       phone_number,
       email,
-      prop_id
+      propertyId
     })
     .then(res => res.data);
   return {
@@ -53,10 +61,10 @@ export function editRenter(
   phone_number,
   email,
   property_manager_renter,
-  renter_id
+  adminId
 ) {
   let data = axios
-    .put(`/api/renter/edit/${renter_id}`, {
+    .put(`/api/renter/edit/${adminId}`, {
       prop_id,
       first_name,
       last_name,
@@ -71,9 +79,9 @@ export function editRenter(
   };
 }
 
-export function deleteRenter(renterId) {
+export function deleteRenter(admin_id, prop_id) {
   let data = axios
-    .delete(`/api/renter/delete/${renterId}`)
+    .delete(`/api/renter/delete/${admin_id}/${prop_id}`)
     .then(res => res.data);
   return {
     type: DELETE_RENTER,

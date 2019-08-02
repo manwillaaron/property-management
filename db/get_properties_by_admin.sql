@@ -1,6 +1,6 @@
-select * from properties p
-join  properties_admin pa
-on p.prop_id = pa.prop_id
-join admin a 
-on a.admin_id = pa.admin_id
-where pa.admin_id = $1;
+select * from properties 
+join  properties_admin
+on properties.prop_id = properties_admin.prop_id
+join admin  
+on admin.admin_id = properties_admin.admin_id
+where properties_admin.admin_id = $1;

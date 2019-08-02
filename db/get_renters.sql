@@ -1,8 +1,7 @@
 
--- select * from renters r
--- join properties p 
--- on p.prop_id = r.prop_id
--- where p.prop_id = $1;
+select * from admin a
+join properties_admin pa
+on pa.admin_id = a.admin_id
+where pa.prop_id = $1
+and a.is_renter in ('true');
 
-SELECT * from renters
-where prop_id = $1;
