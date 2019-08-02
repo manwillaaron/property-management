@@ -12,13 +12,24 @@ module.exports = {
       req.session.admin = {
         username: existingAdmin.username,
         id: existingAdmin.admin_id,
-        loggedIn: true
+        loggedIn: true,
+        renterCheck: existingAdmin.is_renter
       };
       res.send(req.session.admin);
     } else res.status(401).send("username or password incorrect");
   },
+
   async register(req, res) {
-    let { username, password, first_name, last_name, email } = req.body;
+    let {
+      username,
+      password,
+      first_name,
+      last_name,
+      phone_number,
+      email,
+      is_renter,
+      property_manager
+    } = req.body;
     const db = req.app.get("db");
     let [existingAdmin] = await db.get_admin_by_username(username);
     if (existingAdmin) return res.status(401).send("Username already exists");
@@ -29,12 +40,16 @@ module.exports = {
       hash,
       first_name,
       last_name,
-      email
+      phone_number,
+      email,
+      is_renter,
+      property_manager
     ]);
     req.session.admin = {
       username: username,
       id: admin.admin_id,
-      loggedIn: true
+      loggedIn: true,
+      renterCheck: is_renter
     };
     res.send(req.session.admin);
   },
@@ -43,6 +58,12 @@ module.exports = {
     res.sendStatus(200);
   },
   async getAdmin(req, res) {
-    res.send(req.session.admin);
+    return res.send(req.session.admin);
+  },
+  async renterCheck(req, res) {
+    const db = req.app.get("db");
+    let { id } = req.session;
+    let adminInfo = await db.renter_check(id);
+    res.send(adminInfo);
   }
 };

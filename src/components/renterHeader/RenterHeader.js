@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import "./Header.css";
+import "./RenterHeader.css";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { signout, getAdmin } from "../../redux/adminReducer";
 
-class Header extends Component {
+class RenterHeader extends Component {
   render() {
     return (
       <div className="header">
@@ -22,15 +22,6 @@ class Header extends Component {
             {" "}
             Log Out
           </Link>
-          <Link className="header-buttons" to="/add/propertyinput">
-            Add Property
-          </Link>
-          <Link
-            className="header-buttons"
-            to={`/directory/renters/${this.props.admin.admin_id}`}
-          >
-            Renter Directory
-          </Link>
         </div>
       </div>
     );
@@ -45,5 +36,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { signout, getAdmin }
-  )(Header)
+  )(RenterHeader)
 );

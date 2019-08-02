@@ -12,7 +12,6 @@ class PropertyPreview extends Component {
   render() {
     let { property_name, img_url, prop_id } = this.props;
     return (
-    
           <div className="prop">
             <h3 className='property-name-preview'>{property_name}</h3>
             <img src={img_url} alt="none" />

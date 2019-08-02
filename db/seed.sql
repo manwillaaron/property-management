@@ -54,3 +54,33 @@ values
 insert into admin (username,password,first_name,last_name,email)
 values 
 ('manwillaaron', '123', aaron, manwill, 123@g.com);
+
+
+/////renters
+
+INSERT into admin (username, 
+ password, 
+ first_name, 
+ last_name, 
+ phone_number, 
+ email, 
+ is_renter, 
+ property_manager)
+values ('man','12345','aaron','man','+1314','man@gmail.com','true','false');
+
+insert into properties_admin (admin_id, prop_id)
+values((select admin_id from admin
+where phone_number = '+1314'),'4');
+
+update admin
+set username = 'man@gmail.com'
+where phone_number = '+1314';
+
+update admin
+set password = '+1314'
+where username = 'man@gmail.com';
+
+
+select * from properties;
+
+

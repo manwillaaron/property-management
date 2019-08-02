@@ -17,6 +17,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .username-password-container {
     width: 100%;
     height: 30%;
@@ -24,6 +25,7 @@
     flex-direction: column;
     justify-content: space-around;
 }
+
 input{
     height: 17px;
     width:50%

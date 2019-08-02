@@ -23,7 +23,6 @@ class SMSForm extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.props);
     this.props.getAdmin();
     if (this.props.prop_id) {
       await this.props.getRenters(this.props.prop_id);
@@ -35,7 +34,6 @@ class SMSForm extends Component {
         return renter.phone_number;
       })
     });
-    console.log(this.props.renters);
   }
 
   onHandleChange = event => {
@@ -44,12 +42,13 @@ class SMSForm extends Component {
       message: { ...this.state.message, [name]: event.target.value }
     });
   };
+  handleChange = event => {
+    // const name = event.target.getAttribute("name");
+    this.setState({ toArr: event.target.value });
+  };
 
   async onSubmit(event) {
-    console.log(this.state.toArr);
-
     for (let i = 0; i < this.state.toArr.length; i++) {
-      console.log(this.state.toArr[i]);
       await this.setState({
         error: false,
         submitting: true,
@@ -58,8 +57,6 @@ class SMSForm extends Component {
           to: this.state.toArr[i]
         }
       });
-      
-      console.log(this.state);
       fetch("/api/messages", {
         method: "POST",
         headers: {
@@ -79,7 +76,6 @@ class SMSForm extends Component {
               }
             });
           } else {
-            console.log("hit error");
             this.setState({
               error: true,
               submitting: false
@@ -90,8 +86,6 @@ class SMSForm extends Component {
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
     return (
       <div>
         <div>
@@ -102,11 +96,10 @@ class SMSForm extends Component {
             <div>
               <label htmlFor="to">To:</label>
               <input
-                type="tel"
-                name="to"
+                name="toArr"
                 id="to"
                 value={this.state.toArr}
-                onChange={this.onHandleChange}
+                onChange={this.handleChange}
               />
             </div>
             <div>

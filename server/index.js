@@ -5,12 +5,13 @@ const session = require("express-session");
 const ac = require("./controllers/adminController.js");
 const pc = require("./controllers/propertyController");
 const rc = require('./controllers/renterController')
+const sc = require('./controllers/stripeController')
 
 const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
 const authCheck = require("./middleware/authCheck");
 const initSession = require("./middleware/initSession");
-const bodyParser = require('body-parser');
-const pino = require('express-pino-logger')();
+const bodyParser = require('body-parser')
+// const pino = require('express-pino-logger')();
 const client = require('twilio')(
   process.env.TWILIO_ACCOUT_SID,
   process.env.TWILIO_AUTH_TOKEN
@@ -19,8 +20,7 @@ const client = require('twilio')(
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(pino);
+// app.use(pino);
 
 
 
@@ -51,6 +51,7 @@ app.post("/api/login", ac.login);
 app.post("/api/register", ac.register);
 app.delete("/api/signout", ac.signout);
 app.get("/api/admin", authCheck, ac.getAdmin);
+app.get("/api/renterCheck", ac.renterCheck)
 
 //property
 app.get("/api/properties/:adminId", pc.getProperties);
@@ -61,11 +62,14 @@ app.post("/api/properties/:adminId", pc.addProperty);
 //renters
 app.get('/api/renters/:propertyId', rc.getRenters)
 app.post('/api/renter/add', rc.addRenter)
-app.put('/api/renter/edit/:renterId', rc.editRenter)
-app.delete('/api/renter/delete/:renterId', rc.deleteRenter)
+app.put('/api/renter/edit/:admin_id', rc.editRenter)
+app.delete('/api/renter/delete/:admin_id/:propertyId', rc.deleteRenter)
 app.get('/api/all/renters/:adminId', rc.getAllRenters )
 
-//twillio
+//stripe
+app.post('/api/payment',sc.pay)
+
+// twillio
 app.post('/api/messages', (req, res) => {
   res.header('Content-Type', 'application/json');
     client.messages
@@ -82,6 +86,29 @@ app.post('/api/messages', (req, res) => {
       res.send(JSON.stringify({ success: false }));
     });
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // app.get('/api/greeting', (req, res) => {
 //   const name = req.query.name || 'World';
 //   res.setHeader('Content-Type', 'application/json');

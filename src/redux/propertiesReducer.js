@@ -93,8 +93,7 @@ export function editProperties(
   img_url3,
   img_url4,
   img_url5,
-  property_name,
-  admin_id
+  property_name
 ) {
   let data = axios
     .put(`/api/properties/${propertyId}`, {

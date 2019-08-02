@@ -11,6 +11,12 @@ import { Link, Redirect } from "react-router-dom";
 import { getAdmin } from "../../redux/adminReducer";
 
 class RenterDisplay extends Component {
+  async componentDidUpdate(pp) {
+    if (pp.renters.length > 1 && this.props.renters.length === 0) {
+     await this.props.getRenters(+this.props.prop_id);
+    }
+  }
+
   componentDidMount() {
     this.props.getRenters(+this.props.prop_id);
   }
@@ -22,11 +28,11 @@ class RenterDisplay extends Component {
 
   render() {
     if (!this.props.admin_id) return <Redirect to="/login" />;
-
+    if (!this.props.renters) return this.props.getRenters(this.props.prop_id);
     return (
       <div className="renters-container">
         {this.props.renters.map((renter, a) => (
-          <div className="renter-container" key={renter.renter_id}>
+          <div className="renter-container" key={renter.admin_id}>
             <div className="renter-count-container">
               <h2 className="renter-count">renter {a + 1}</h2>
             </div>
@@ -45,7 +51,11 @@ class RenterDisplay extends Component {
               <h5>{renter.email}</h5>
             </div>
             <div>
-              <button onClick={() => this.deleteRenter(renter.renter_id)}>
+              <button
+                onClick={() =>
+                  this.props.deleteRenter(renter.admin_id, this.props.prop_id)
+                }
+              >
                 delete
               </button>
             </div>

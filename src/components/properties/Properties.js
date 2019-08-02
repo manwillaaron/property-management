@@ -11,17 +11,23 @@ import { Link, Redirect } from "react-router-dom";
 import Header from "../header/Header";
 import { getAdmin } from "../../redux/adminReducer";
 import RenterDisplay from "../renters/RenterDisplay";
-import SMSForm from '../../SMS/SMSForm';
+import SMSForm from "../../SMS/SMSForm";
 
 class Properties extends Component {
+  componentDidUpdate(pp) {
+    if (pp !== this.props) {
+      getRenters(this.props.match.params.prop_id);
+    }
+  }
+
   componentDidMount() {
     this.props.getProperties();
     this.props.getAdmin();
-    console.log(this.props)
   }
 
   render() {
     if (!this.props.admin_id) return <Redirect to="/login" />;
+    // if (JSON.parse(this.props.admin.admin.renterCheck) === true) return <Redirect to="/renter" />;
 
     let property = {};
     if (this.props.properties) {
@@ -35,7 +41,7 @@ class Properties extends Component {
     }
 
     return (
-      <div className='?' key={property.prop_id}>
+      <div className="?" key={property.prop_id}>
         <Header />
         <div className="property-images">
           <img src={property.img_url} alt="" />
@@ -87,9 +93,7 @@ class Properties extends Component {
           Edit
         </Link>
         <RenterDisplay prop_id={property.prop_id} />
-        <SMSForm
-        prop_id={property.prop_id}
-        />
+        <SMSForm prop_id={property.prop_id} />
       </div>
     );
   }

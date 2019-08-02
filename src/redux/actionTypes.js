@@ -5,6 +5,7 @@ export const ADD_PROPERTY = 'ADD_PROPERTY'
 export const EDIT_PROPERTY = 'EDIT_PROPERTY'
 export const DELETE_PROPERTY = 'DELETE_PROPERTY'
 export const GET_ADMIN = "GET_ADMIN"
+export const RENTER_CHECK = "RENTER_CHECK"
 export const SIGNOUT = "SIGNOUT"
 export const ADD_RENTER = 'ADD_RENTER'
 export const DELETE_RENTER = 'DELETE_RENTER'
