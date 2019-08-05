@@ -6,24 +6,28 @@ const ac = require("./controllers/adminController.js");
 const pc = require("./controllers/propertyController");
 const rc = require('./controllers/renterController')
 const sc = require('./controllers/stripeController')
-
+const sockc = require('./controllers/socketController')
 const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
 const authCheck = require("./middleware/authCheck");
 const initSession = require("./middleware/initSession");
 const bodyParser = require('body-parser')
 // const pino = require('express-pino-logger')();
-const client = require('twilio')(
-  process.env.TWILIO_ACCOUT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+// const client = require('twilio')(
+//   process.env.TWILIO_ACCOUT_SID,
+//   process.env.TWILIO_AUTH_TOKEN
+// );
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(pino);
 
+//////////////////////////////////////
+const server = require('http').Server(app);
+const io = require('socket.io')(server)
 
 
+//////////////////////////////////////
 app.use(express.json());
 
 app.use(
@@ -66,26 +70,45 @@ app.put('/api/renter/edit/:admin_id', rc.editRenter)
 app.delete('/api/renter/delete/:admin_id/:propertyId', rc.deleteRenter)
 app.get('/api/all/renters/:adminId', rc.getAllRenters )
 
+//Socket
+app.get('/api/messages/:admin_id', sockc.getMessages)
+app.get('/api/chatrooms/:admin_id', sockc.getAllChatrooms)
+app.post('/api/newmessage', sockc.saveMessage)
+io.on('connection', socket => {
+    // When a client connects run this function
+    console.log('A connection happened', socket.id);
+
+    // When the client sends 'needy' and a roomid add them to the room
+    socket.on('needy', roomid => sockc.joinRoom(roomid, socket, io));
+
+    // When the client sends a message to the server send it to everyone
+    socket.on('message to server', payload =>
+    sockc.sendMessageToRoom(payload, io)
+    );
+});
+
+server.listen(4000, () => console.log('Best LESSON EVER! Sockets are cool'));
+
 //stripe
 app.post('/api/payment',sc.pay)
 
 // twillio
-app.post('/api/messages', (req, res) => {
-  res.header('Content-Type', 'application/json');
-    client.messages
-    .create({
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: req.body.to,
-      body: req.body.body
-    })
-    .then(() => {
-      res.send(JSON.stringify({ success: true }));
-    })
-    .catch(err => {
-      console.log('?????????????????', err);
-      res.send(JSON.stringify({ success: false }));
-    });
-})
+// app.post('/api/messages', (req, res) => {
+//   res.header('Content-Type', 'application/json');
+//     client.messages
+//     .create({
+//       from: process.env.TWILIO_PHONE_NUMBER,
+//       to: `+1${req.body.to}`,
+//       body: req.body.body
+//     })
+//     .then(() => {
+//       res.send(JSON.stringify({ success: true }));
+//     })
+//     .catch(err => {
+//       console.log('?????????????????', err);
+//       res.send(JSON.stringify({ success: false }));
+//     });
+// })
 
 
 

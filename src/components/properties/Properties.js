@@ -15,7 +15,7 @@ import SMSForm from "../../SMS/SMSForm";
 
 class Properties extends Component {
   componentDidUpdate(pp) {
-    if (pp !== this.props) {
+    if (pp !== this.props || this.props.renters.length === 0 ) {
       getRenters(this.props.match.params.prop_id);
     }
   }

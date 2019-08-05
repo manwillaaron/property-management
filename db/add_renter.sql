@@ -1,3 +1,6 @@
+insert into chat_junction (admin_id_pm)
+values ($8);
+
 INSERT into admin (
  username, 
  password,
@@ -6,8 +9,11 @@ INSERT into admin (
  phone_number, 
  email, 
  is_renter, 
- property_manager)
-values ($1,$2,$3,$4,$5,$6,'true','false');
+ property_manager,
+ chatroom_id)
+values ('123456789',$2,$3,$4,$5,$6,'true','false',(
+    select max(chatroom_id) from chat_junction
+    ));
 
 update admin
 set username = $6

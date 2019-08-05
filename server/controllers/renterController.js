@@ -26,6 +26,7 @@ module.exports = {
       email,
       propertyId
     } = req.body;
+    let { id } = req.session.admin;
 
     let username = email
     let [existingAdmin] = await db.get_admin_by_username(email);
@@ -40,7 +41,8 @@ module.exports = {
       last_name,
       phone_number,
       email,
-      propertyId
+      +propertyId,
+      +id
     ]);
     res.send(admin);
   },

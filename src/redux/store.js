@@ -5,11 +5,13 @@ import propertiesReducer from "./propertiesReducer";
 import renterReducer from "./renterReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import socketReducer from "./socketReducer";
 
 const rootReducer = combineReducers({
   admin: adminReducer,
   properties: propertiesReducer,
-  renters: renterReducer
+  renters: renterReducer,
+  socket: socketReducer
 });
 
 const persistconfig = {

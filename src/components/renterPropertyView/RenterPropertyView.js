@@ -8,7 +8,7 @@ import {
 import { getRenters, deleteRenter } from "../../redux/renterReducer";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import RenterHeader from "../renterHeader/RenterHeader";
+import Header from "../header/Header";
 import { getAdmin } from "../../redux/adminReducer";
 
 class RenterPropertyView extends Component {
@@ -39,7 +39,7 @@ class RenterPropertyView extends Component {
 
     return (
       <div className="rpv-page" key={property.prop_id}>
-        <RenterHeader />
+        <Header />
         <div className="property-info-container">
           <div className="property-images">
             <img src={property.img_url} alt="" />

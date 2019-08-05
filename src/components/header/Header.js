@@ -3,6 +3,7 @@ import "./Header.css";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { signout, getAdmin } from "../../redux/adminReducer";
+import logo from './Logo-rentops.png'
 
 class Header extends Component {
   render() {
@@ -10,26 +11,25 @@ class Header extends Component {
       <div className="header">
         <div />
         <div className="header-title-container">
-          <h1 className="header-title">RentalOps</h1>
+          <img src={logo} className="header-title" alt='RentOps'/>
         </div>
 
         <div className="header-button-container">
           <Link
             onClick={e => this.props.signout(this.props.admin.admin_id)}
             className="header-buttons"
-            to="/"
+            to="/login"
           >
             {" "}
             Log Out
           </Link>
-          <Link className="header-buttons" to="/add/propertyinput">
-            Add Property
-          </Link>
           <Link
+            onClick={console.log(this.props)}
             className="header-buttons"
-            to={`/directory/renters/${this.props.admin.admin_id}`}
+            to="/"
           >
-            Renter Directory
+            {" "}
+            Go Back
           </Link>
         </div>
       </div>

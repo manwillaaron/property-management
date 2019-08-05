@@ -13,7 +13,8 @@ module.exports = {
         username: existingAdmin.username,
         id: existingAdmin.admin_id,
         loggedIn: true,
-        renterCheck: existingAdmin.is_renter
+        renterCheck: existingAdmin.is_renter,
+        firstName: existingAdmin.first_name
       };
       res.send(req.session.admin);
     } else res.status(401).send("username or password incorrect");
@@ -49,7 +50,8 @@ module.exports = {
       username: username,
       id: admin.admin_id,
       loggedIn: true,
-      renterCheck: is_renter
+      renterCheck: is_renter,
+      firstName: first_name
     };
     res.send(req.session.admin);
   },
