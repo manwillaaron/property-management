@@ -9,11 +9,16 @@ import Renter from "./components/renters/Renter";
 import RenterDashboard from './components/renterDashboard/RenterDashboard'
 import RenterDirectory from "./components/renterDirectory/RenterDirectory";
 import RenterPropertyView from "./components/renterPropertyView/RenterPropertyView.js";
+import CheckoutForm from './CheckoutForm.js'
+import SocketView from "./components/socketView/SocketView.js";
+import ChatDisplay from "./components/chatDisplay/ChatDisplay.js";
+import PropertiesPreview from "./components/properties/PropertiesPreview.js";
 
 export default (
   <Switch>
     <Route path="/" exact component={AdminDashboard} />
     <Route path='/renter' exact component={RenterDashboard}/>
+    <Route path='/propertiespreview' component={PropertiesPreview}/>
     <Route path="/moreinfo/:prop_id" component={Properties} />
     <Route path="/moreinfo" component={Properties} />
     <Route path="/add/moreinfo" component={Properties} />
@@ -24,7 +29,9 @@ export default (
     <Route path="/add/propertyinput" component={PropertyInputs} />
     <Route path="/edit/renters/:prop_id" component={Renter} />
     <Route path="/add/renter/:prop_id" component={Renter} />
-    <Route path='/directory/renters/:admin_id' component={RenterDirectory}/>
+    <Route path='/directory/renters' component={RenterDirectory}/>
     <Route path='/renter/moreinfo/:prop_id' component={RenterPropertyView}/>
+    <Route path='/pay/rent/:prop_rent' component={CheckoutForm}/>
+    <Route path='/propertymanager/chat/:admin_id' component={ChatDisplay}/>
   </Switch>
 );

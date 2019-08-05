@@ -98,7 +98,7 @@ class PropertyInputs extends Component {
 
   render() {
     if (!this.props.admin_id) return <Redirect to="/login" />;
-    if (JSON.parse(this.props.admin.admin.renterCheck) === true) return <Redirect to="/renter" />;
+    // if (JSON.parse(this.props.admin.admin.renterCheck) === true) return <Redirect to="/renter" />;
     let {
       address,
       num_beds,

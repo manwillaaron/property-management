@@ -82,7 +82,7 @@ class Renter extends Component {
                   last_name,
                   phone_number,
                   email,
-                  +this.state.prop_id
+                  this.state.prop_id
                 )
               }
             >

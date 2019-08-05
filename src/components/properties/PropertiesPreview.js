@@ -5,6 +5,7 @@ import { getProperties } from "../../redux/propertiesReducer";
 import { getAllRenters } from "../../redux/renterReducer";
 import { getAdmin } from "../../redux/adminReducer";
 import PropertyPreview from "../propertyInputs/PropertyPreview";
+import Header from '../header/Header'
 
 class PropertiesPreview extends Component {
   constructor(props) {
@@ -29,9 +30,11 @@ class PropertiesPreview extends Component {
     const { properties } = this.props;
     return (
       <div className="map-container">
+        <Header />
         {properties.map(property => {
           return (
             <div className="prop-container" key={property.prop_id}>
+              
               <PropertyPreview {...property} />
             </div>
           );

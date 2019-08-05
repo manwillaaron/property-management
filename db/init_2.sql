@@ -43,3 +43,20 @@ prop_id INTEGER NOT NULL
 
 ALTER TABLE properties_admin ADD CONSTRAINT properties_admin_fk0 FOREIGN KEY (prop_id) REFERENCES properties(prop_id);
 ALTER TABLE properties_admin ADD CONSTRAINT properties_admin_fk1 FOREIGN KEY (admin_id) REFERENCES admin(admin_id);
+
+
+
+
+
+create table chat_junction (
+ chatroom_id serial PRIMARY KEY,
+ admin_id INTEGER references admin(admin_id),
+ admin_id_renter INTEGER references admin(admin_id)
+ );
+
+
+ create table messages (
+message_id serial PRIMARY KEY,
+chatroom_id INTEGER REFERENCES chat_junction(chatroom_id),
+message_content text
+);

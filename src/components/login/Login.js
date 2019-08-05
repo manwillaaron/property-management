@@ -3,6 +3,7 @@ import "./Login.css";
 import { login, getAdmin } from "../../redux/adminReducer";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import logo from './Logo-rentops.png';
 
 class Login extends Component {
   constructor() {
@@ -34,7 +35,7 @@ class Login extends Component {
     let { username, password } = this.state;
     return (
       <div className="login-page">
-        <h1 className="title">RentalOps</h1>
+        <img src={logo} className="title" alt='RentOps'/>
         <div className="login-box">
           <h1 className="login-title">Login</h1>
           <div className="username-password-input-container">
