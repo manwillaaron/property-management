@@ -27,7 +27,7 @@ const io = require("socket.io")(server);
 
 app.use(express.json());
 
-app.use(express.static(__dirname + "/../build"));
+
 
 app.use(
   session({
@@ -81,7 +81,7 @@ io.on("connection", socket => {
 });
 //stripe
 app.post("/api/payment", sc.pay);
-
+app.use(express.static(__dirname + "/../build"));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../build/index.html"));
 });
