@@ -22,3 +22,9 @@ where username = '123456789';
 insert into properties_admin ( prop_id, admin_id)
 values($7,( select max(admin_id) from admin )
 );
+
+update admin 
+set chatroom_id = (
+    select max(chatroom_id) from chat_junction
+    )
+    where admin_id = $8
